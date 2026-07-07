@@ -46,13 +46,35 @@
             margin: 20px 0;
             font-size: 15px;
         }
+        
+        /* Search Bar Styles */
+        .search-container {
+            margin: 20px 0;
+            position: relative;
+        }
+        .search-input {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 25px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .search-input:focus {
+            border-color: #ff3333;
+            box-shadow: 0 0 8px rgba(255, 51, 51, 0.3);
+        }
+
         .section-title {
             text-align: left;
             color: #ffffff;
             font-size: 18px;
             border-left: 4px solid #ff3333;
             padding-left: 10px;
-            margin-top: 35px;
+            margin-top: 25px;
             margin-bottom: 15px;
             font-weight: bold;
         }
@@ -64,6 +86,7 @@
         th, td {
             padding: 12px;
             text-align: left;
+            vertical-align: middle;
         }
         th {
             background-color: #2a2a2a;
@@ -75,8 +98,25 @@
             border-bottom: 1px solid #2a2a2a;
             font-size: 15px;
         }
-        tr:nth-child(even) {
+        .movie-row {
+            transition: 0.2s;
+        }
+        .movie-row:nth-child(even) {
             background-color: #252525;
+        }
+        /* Poster Image Style */
+        .poster {
+            width: 45px;
+            height: 65px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 12px;
+            vertical-align: middle;
+            border: 1px solid #444;
+        }
+        .movie-title {
+            display: inline-block;
+            vertical-align: middle;
         }
         .price {
             text-align: right;
@@ -111,6 +151,12 @@
         .btn:hover {
             background: #20ba59;
         }
+        .no-results {
+            display: none;
+            padding: 20px;
+            color: #aaa;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -121,7 +167,12 @@
 
     <!-- දින 7ක විශේෂ දීමනාව -->
     <div class="offer">
-        🚨 විශේෂ දීමනාව! Teen Wolf (Season 6) - රု. 450/= පමණයි!
+        🚨 විශේෂ දීමනාව! Teen Wolf (Season 6) - රු. 450/= පමණයි!
+    </div>
+
+    <!-- සර්ච් බාර් එක -->
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="Movie හෝ TV Series එකක් Search කරන්න...">
     </div>
 
     <div class="section-title">TV Series & Movies මිල ගණන්</div>
@@ -132,29 +183,52 @@
                 <th style="text-align: right;">Price</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>Teen Wolf (Season 6)</td>
+        <tbody id="movieTable">
+            <!-- 1 වෙනි Item එක (Teen Wolf S6) -->
+            <tr class="movie-row">
+                <td>
+                    <img src="https://via.placeholder.com/45x65/ff3333/ffffff?text=TW+S6" class="poster" alt="Teen Wolf S6">
+                    <span class="movie-title">Teen Wolf (Season 6)</span>
+                </td>
                 <td class="price">රු. 450</td>
             </tr>
-            <tr>
-                <td>Teen Wolf (Full Series)</td>
+            <!-- 2 වෙනි Item එක -->
+            <tr class="movie-row">
+                <td>
+                    <img src="https://via.placeholder.com/45x65/ff3333/ffffff?text=TW+Full" class="poster" alt="Teen Wolf Full">
+                    <span class="movie-title">Teen Wolf (Full Series)</span>
+                </td>
                 <td class="price">රු. 850</td>
             </tr>
-            <tr>
-                <td>Game of Thrones (Full Series)</td>
+            <!-- 3 වෙනි Item එක -->
+            <tr class="movie-row">
+                <td>
+                    <img src="https://via.placeholder.com/45x65/ff3333/ffffff?text=GOT" class="poster" alt="GOT">
+                    <span class="movie-title">Game of Thrones (Full Series)</span>
+                </td>
                 <td class="price">රු. 800</td>
             </tr>
-            <tr>
-                <td>Money Heist (Full Series)</td>
+            <!-- 4 වෙනි Item එක -->
+            <tr class="movie-row">
+                <td>
+                    <img src="https://via.placeholder.com/45x65/ff3333/ffffff?text=MH" class="poster" alt="Money Heist">
+                    <span class="movie-title">Money Heist (Full Series)</span>
+                </td>
                 <td class="price">රු. 600</td>
             </tr>
-            <tr>
-                <td>Single Movie (HD)</td>
+            <!-- 5 වෙනි Item එක -->
+            <tr class="movie-row">
+                <td>
+                    <img src="https://via.placeholder.com/45x65/ff3333/ffffff?text=Movie" class="poster" alt="Single Movie">
+                    <span class="movie-title">Single Movie (HD)</span>
+                </td>
                 <td class="price">රු. 100</td>
             </tr>
         </tbody>
     </table>
+
+    <!-- සර්ච් කරලා මුකුත් නැති වුනොත් පේන මැසේජ් එක -->
+    <div id="noResults" class="no-results">එහෙම එකක් හොයාගන්න නැහැ මචං! 🧐</div>
 
     <div class="payment-info">
         <strong>ගෙවීම් ක්‍රම (Payment Methods):</strong><br>
@@ -167,6 +241,36 @@
     <a href="https://chat.whatsapp.com/IZ0k2BuZxquDBLeVZ8HRXx?s=cl&p=a&mlu=0&ilr=0" target="_blank" class="btn">Join Our WhatsApp Group</a>
 </div>
 
+<!-- Search Function එකට අදාල JavaScript කෑල්ල -->
+<script>
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        let filter = this.value.toUpperCase();
+        let rows = document.getElementById('movieTable').getElementsByTagName('tr');
+        let hasResults = false;
+
+        for (let i = 0; i < rows.length; i++) {
+            let titleSpan = rows[i].getElementsByClassName('movie-title')[0];
+            if (titleSpan) {
+                let textValue = titleSpan.textContent || titleSpan.innerText;
+                if (textValue.toUpperCase().indexOf(filter) > -1) {
+                    rows[i].style.display = "";
+                    hasResults = true;
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+
+        let noResultsDiv = document.getElementById('noResults');
+        if (hasResults) {
+            noResultsDiv.style.style.display = "none";
+        } else {
+            noResultsDiv.style.display = "block";
+        }
+    });
+</script>
+
 </body>
 </html>
+
 
