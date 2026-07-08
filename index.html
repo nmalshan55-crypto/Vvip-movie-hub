@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SL Movie Hub - TV Series Store</title>
+    <title>VVIP Movie Hub - TV Series Store</title>
     <!-- Google Fonts & FontAwesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -124,23 +124,25 @@
             transform: translateY(-5px);
             border-color: var(--primary-color);
         }
-        .movie-img {
+        .movie-poster {
             width: 100%;
-            height: 280px;
-            background: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-size: 40px;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            background-color: #333;
         }
         .movie-info {
             padding: 15px;
             text-align: center;
         }
         .movie-info h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
+            font-size: 16px;
+            margin-bottom: 12px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
         .btn-order {
             background: var(--primary-color);
@@ -234,38 +236,52 @@
         </div>
 
         <div class="movies-grid" id="moviesGrid">
-            <!-- Movie 1 -->
+            
+            <!-- 1. Money Heist -->
             <div class="movie-card" data-title="money heist">
-                <div class="movie-img"><i class="fa-solid fa-mask"></i></div>
+                <img src="https://i.ibb.co/6R5GfV00/image.jpg" alt="Money Heist" class="movie-poster">
                 <div class="movie-info">
                     <h3>Money Heist</h3>
                     <button class="btn-order" onclick="switchPage('contact')">Order Now</button>
                 </div>
             </div>
-            <!-- Movie 2 -->
+
+            <!-- 2. Game of Thrones -->
             <div class="movie-card" data-title="game of thrones got">
-                <div class="movie-img"><i class="fa-solid fa-throne"></i></div>
+                <img src="https://i.ibb.co/v6Ybyf77/image.jpg" alt="Game of Thrones" class="movie-poster">
                 <div class="movie-info">
                     <h3>Game of Thrones</h3>
                     <button class="btn-order" onclick="switchPage('contact')">Order Now</button>
                 </div>
             </div>
-            <!-- Movie 3 -->
-            <div class="movie-card" data-title="teen wolf">
-                <div class="movie-img"><i class="fa-solid fa-wolf-pack-battalion"></i></div>
+
+            <!-- 3. Cobra Kai -->
+            <div class="movie-card" data-title="cobra kai">
+                <img src="https://i.ibb.co/Y7XmYg88/image.jpg" alt="Cobra Kai" class="movie-poster">
                 <div class="movie-info">
-                    <h3>Teen Wolf</h3>
+                    <h3>Cobra Kai</h3>
                     <button class="btn-order" onclick="switchPage('contact')">Order Now</button>
                 </div>
             </div>
-            <!-- Movie 4 -->
-            <div class="movie-card" data-title="harry potter">
-                <div class="movie-img"><i class="fa-solid fa-wand-sparkles"></i></div>
+
+            <!-- 4. Stranger Things -->
+            <div class="movie-card" data-title="stranger things strange things">
+                <img src="https://i.ibb.co/fVwM3m99/image.jpg" alt="Stranger Things" class="movie-poster">
                 <div class="movie-info">
-                    <h3>Harry Potter</h3>
+                    <h3>Stranger Things</h3>
                     <button class="btn-order" onclick="switchPage('contact')">Order Now</button>
                 </div>
             </div>
+
+            <!-- 5. High School Return of a Gangster -->
+            <div class="movie-card" data-title="high school return of a gangster">
+                <img src="https://i.ibb.co/mC2mYn00/image.jpg" alt="High School Return of a Gangster" class="movie-poster">
+                <div class="movie-info">
+                    <h3>High School Return of a Gangster</h3>
+                    <button class="btn-order" onclick="switchPage('contact')">Order Now</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -293,15 +309,13 @@
             document.getElementById('testingBanner').style.display = 'none';
         }
 
-        // 2. Next Page එකට මාරු වෙන (Tab Switching) Function එක
+        // 2. Next Page එකට මාරু වෙන (Tab Switching) Function එක
         function switchPage(pageName) {
-            // Remove active classes
             document.getElementById('home-page').classList.remove('active');
             document.getElementById('contact-page').classList.remove('active');
             document.getElementById('btn-home').classList.remove('active');
             document.getElementById('btn-contact').classList.remove('active');
 
-            // Add active class to target
             if(pageName === 'home') {
                 document.getElementById('home-page').classList.add('active');
                 document.getElementById('btn-home').classList.add('active');
@@ -309,7 +323,6 @@
                 document.getElementById('contact-page').classList.add('active');
                 document.getElementById('btn-contact').classList.add('active');
             }
-            // Page එක මාරු වන විට ඉහලටම Scroll කිරීම
             window.scrollTo(0, 0);
         }
 
@@ -320,7 +333,6 @@
             let grid = document.getElementById('moviesGrid');
             let hasResults = false;
 
-            // පරණ "No results" මැසේජ් එකක් තිබේ නම් අයින් කරයි
             let oldMsg = document.getElementById('noResultsMsg');
             if(oldMsg) oldMsg.remove();
 
@@ -334,7 +346,6 @@
                 }
             }
 
-            // සර්ච් කරන එකක් නැත්නම් මැසේජ් එකක් පෙන්වීම
             if (!hasResults) {
                 let noResultHTML = '<div id="noResultsMsg" class="no-results">Oops! ඒ වගේ TV Series එකක් හමු වුණේ නැහැ. 🛑</div>';
                 grid.insertAdjacentHTML('beforeend', noResultHTML);
