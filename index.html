@@ -3,352 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VVIP Movie Hub - TV Series Store</title>
-    <!-- Google Fonts & FontAwesome Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>TV Series Zone</title>
     <style>
-        :root {
-            --primary-color: #e50914;
-            --bg-color: #111;
-            --card-bg: #222;
-            --text-color: #fff;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: #141414;
+            color: #ffffff;
         }
 
         /* 1. Testing Alert Banner */
-        .testing-banner {
-            background-color: #ff9800;
+        .testing-alert {
+            background-color: #ffcc00;
             color: #000;
             padding: 12px;
             text-align: center;
-            font-weight: 600;
+            font-weight: bold;
             position: relative;
-            z-index: 1000;
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 1000;
         }
-        .testing-banner .close-btn {
+
+        .close-btn {
             position: absolute;
             right: 20px;
             cursor: pointer;
             font-size: 20px;
             font-weight: bold;
+            background: none;
+            border: none;
+            color: #000;
         }
 
         /* Navigation Bar */
         nav {
             background-color: #000;
-            padding: 15px 5%;
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid var(--primary-color);
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        .nav-links button {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            margin-left: 20px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .nav-links button.active, .nav-links button:hover {
-            color: var(--primary-color);
+            border-bottom: 2px solid #e50914;
         }
 
-        /* Container Pages styling */
-        .page {
-            display: none;
-            padding: 40px 5%;
+        nav h1 {
+            color: #e50914; 
+            font-size: 24px;
+            letter-spacing: 1px;
         }
-        .page.active {
+
+        nav button {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+
+        nav button:hover {
+            background-color: #b80710;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Home Page Section */
+        #home-page {
             display: block;
         }
 
-        /* Home Page - Search & Cards */
-        .search-container {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .search-container h1 {
-            margin-bottom: 15px;
-        }
+        /* Search Bar */
         .search-box {
             width: 100%;
             max-width: 500px;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 25px;
-            border: 2px solid #444;
-            background: #222;
-            color: #fff;
-            outline: none;
-        }
-        .search-box:focus {
-            border-color: var(--primary-color);
+            margin: 0 auto 40px auto;
+            display: flex;
         }
 
-        .movies-grid {
+        .search-box input {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+            color: #000;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        /* TV Series Grid */
+        .series-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 25px;
-        }
-        .movie-card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            overflow: hidden;
-            transition: 0.3s;
-            border: 1px solid #333;
-        }
-        .movie-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-color);
-        }
-        .movie-poster {
-            width: 100%;
-            height: 320px;
-            object-fit: cover;
-            display: block;
-            background-color: #333;
-        }
-        .movie-info {
-            padding: 15px;
-            text-align: center;
-        }
-        .movie-info h3 {
-            font-size: 16px;
-            margin-bottom: 12px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .btn-order {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            width: 100%;
-            transition: 0.3s;
-        }
-        .btn-order:hover {
-            background: #b20710;
+            gap: 30px;
         }
 
-        /* Next Page - Contact Info */
-        .contact-card {
-            background: var(--card-bg);
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 40px;
-            border-radius: 15px;
+        .series-card {
+            background-color: #1f1f1f;
+            border-radius: 8px;
+            overflow: hidden;
             text-align: center;
-            border: 1px solid #333;
+            padding-bottom: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #2d2d2d;
         }
-        .contact-card h2 {
-            margin-bottom: 25px;
-            color: var(--primary-color);
+
+        .series-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(229, 9, 20, 0.3);
         }
-        .contact-btn {
+
+        .series-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            background-color: #333;
+        }
+
+        .series-card h3 {
+            margin: 15px 0 10px 0;
+            padding: 0 10px;
+            font-size: 16px;
+            height: 40px; /* පේළි දෙකක් ආවත් කාඩ් එක එකම ගානට තියෙන්න */
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+        }
+
+        .buy-btn {
+            background-color: #25D366; 
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .buy-btn:hover {
+            background-color: #128C7E;
+        }
+
+        /* 3. Next Page Section */
+        #order-page {
+            display: none;
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .order-box {
+            background-color: #222;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .order-box h2 {
+            margin-bottom: 25px;
+            color: #ffcc00;
+            font-size: 22px;
+        }
+
+        .link-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 100%;
             padding: 15px;
             margin: 15px 0;
-            border-radius: 8px;
-            text-decoration: none;
             font-size: 18px;
             font-weight: bold;
+            text-decoration: none;
+            color: white;
+            border-radius: 5px;
             transition: 0.3s;
         }
-        .btn-whatsapp {
+
+        .whatsapp-group {
+            background-color: #128C7E;
+        }
+        .whatsapp-group:hover {
+            background-color: #075E54;
+        }
+
+        .whatsapp-chat {
             background-color: #25D366;
-            color: black;
         }
-        .btn-whatsapp:hover {
-            background-color: #1ebd57;
+        .whatsapp-chat:hover {
+            background-color: #1fc75b;
         }
-        .btn-phone {
-            background-color: #007bff;
-            color: white;
+
+        .back-btn {
+            background-color: #444;
+            margin-top: 25px;
         }
-        .btn-phone:hover {
-            background-color: #0056b3;
-        }
-        
-        .no-results {
-            text-align: center;
-            grid-column: 1 / -1;
-            color: #aaa;
-            font-size: 18px;
-            margin-top: 20px;
+        .back-btn:hover {
+            background-color: #555;
         }
     </style>
 </head>
 <body>
 
     <!-- 1. Testing Alert Banner -->
-    <div class="testing-banner" id="testingBanner">
-        <span>⚠️ අවධානයට: මෙම වෙබ් අඩවිය තවමත් පරීක්ෂණ මට්ටමේ (Testing) පවතී!</span>
-        <span class="close-btn" onclick="closeBanner()">&times;</span>
+    <div class="testing-alert" id="testingAlert">
+        මෙම වෙබ් අඩවිය දැනට Testing මට්ටමේ පවතී! (Under Testing)
+        <button class="close-btn" onclick="closeAlert()">X</button>
     </div>
 
-    <!-- Navigation -->
+    <!-- Navigation Header -->
     <nav>
-        <div class="logo"><i class="fa-solid fa-film"></i> VVIP Movie Hub</div>
-        <div class="nav-links">
-            <button id="btn-home" class="active" onclick="switchPage('home')">Home</button>
-            <button id="btn-contact" onclick="switchPage('contact')">Order / Contact</button>
-        </div>
+        <h1>TV Series Store</h1>
+        <button onclick="showPage('order-page')">Order Now</button>
     </nav>
 
-    <!-- PAGE 1: Home (TV Series Showcase & Search) -->
-    <div id="home-page" class="page active">
-        <div class="search-container">
-            <h1>Find Your Favorite TV Series</h1>
-            <input type="text" id="searchBar" class="search-box" placeholder="TV Series එකක් සර්ච් කරන්න..." onkeyup="searchSeries()">
-        </div>
+    <div class="container">
+        
+        <!-- HOME PAGE (Search & Series List) -->
+        <section id="home-page">
+            <!-- 2. Search Bar -->
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="ඔබට අවශ්‍ය TV Series එකක් Search කරන්න..." onkeyup="searchSeries()">
+            </div>
 
-        <div class="movies-grid" id="moviesGrid">
-            
-            <!-- 1. Money Heist -->
-            <div class="movie-card" data-title="money heist">
-                <img src="https://i.ibb.co/cc2VMzJM/IMG-20260516-WA0019.jpg" alt="Money Heist" class="movie-poster">
-                <div class="movie-info">
+            <!-- TV Series List -->
+            <div class="series-grid" id="seriesGrid">
+                
+                <!-- 1. Money Heist -->
+                <div class="series-card" data-title="money heist">
+                    <img src="https://i.ibb.co/cc2VMzJM/IMG-20260516-WA0019.jpg" alt="Money Heist">
                     <h3>Money Heist</h3>
-                    <button class="btn-order" onclick="switchPage('contact')">Order Now</button>
+                    <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
-            </div>
 
-            <!-- 2. Game of Thrones -->
-            <div class="movie-card" data-title="game of thrones got">
-                <img src="https://i.ibb.co/39GHzrPG/IMG-20260403-WA0010.jpg" alt="Game of Thrones" class="movie-poster">
-                <div class="movie-info">
+                <!-- 2. Game of Thrones -->
+                <div class="series-card" data-title="game of thrones">
+                    <img src="https://i.ibb.co/39GHzrPG/IMG-20260403-WA0010.jpg" alt="Game of Thrones">
                     <h3>Game of Thrones</h3>
-                    <button class="btn-order" onclick="switchPage('contact')">Order Now</button>
+                    <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
-            </div>
 
-            <!-- 3. Cobra Kai -->
-            <div class="movie-card" data-title="cobra kai">
-                <img src="https://i.ibb.co/1JQKv7zQ/IMG-20260522-WA0036.jpg" alt="Cobra Kai" class="movie-poster">
-                <div class="movie-info">
+                <!-- 3. Cobra Kai -->
+                <div class="series-card" data-title="cobra kai">
+                    <img src="https://i.ibb.co/1JQKv7zQ/IMG-20260522-WA0036.jpg" alt="Cobra Kai">
                     <h3>Cobra Kai</h3>
-                    <button class="btn-order" onclick="switchPage('contact')">Order Now</button>
+                    <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
-            </div>
 
-            <!-- 4. Stranger Things -->
-            <div class="movie-card" data-title="stranger things strange things">
-                <img src="https://i.ibb.co/8gVSV7mS/IMG-20260519-WA0023.jpg" alt="Stranger Things" class="movie-poster">
-                <div class="movie-info">
+                <!-- 4. Stranger Things -->
+                <div class="series-card" data-title="strange things stranger things">
+                    <img src="https://i.ibb.co/8gVSV7mS/IMG-20260519-WA0023.jpg" alt="Stranger Things">
                     <h3>Stranger Things</h3>
-                    <button class="btn-order" onclick="switchPage('contact')">Order Now</button>
+                    <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
-            </div>
 
-            <!-- 5. High School Return of a Gangster -->
-            <div class="movie-card" data-title="high school return of a gangster">
-                <img src="https://i.ibb.co/gZQD7zC8/IMG-20260708-WA0025.jpg" alt="High School Return of a Gangster" class="movie-poster">
-                <div class="movie-info">
-                    <h3>High School Return of a Gangster</h3>
-                    <button class="btn-order" onclick="switchPage('contact')">Order Now</button>
+                <!-- 5. High school Return of gangster -->
+                <div class="series-card" data-title="high school return of gangster kdrama">
+                    <img src="https://i.ibb.co/gZQD7zC8/IMG-20260708-WA0025.jpg" alt="High school Return of gangster">
+                    <h3>High school Return of gangster</h3>
+                    <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
+
+                <!-- 6. Every which way -->
+                <div class="series-card" data-title="every which way">
+                    <img src="https://i.ibb.co/Hf9FKMVp/IMG-20260708-183359-408.jpg" alt="Every which way">
+                    <h3>Every which way</h3>
+                    <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
+                </div>
+
+                <!-- 7. Himanthara -->
+                <div class="series-card" data-title="himanthara tele drama">
+                    <img src="https://i.ibb.co/G33qVZdY/IMG-20260708-183417-086.jpg" alt="Himanthara">
+                    <h3>Himanthara</h3>
+                    <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
+                </div>
+
+                <!-- 8. Boys over flower -->
+                <div class="series-card" data-title="boys over flower kdrama">
+                    <img src="https://i.ibb.co/ynrK6Zhg/IMG-20260708-183440-863.jpg" alt="Boys over flower">
+                    <h3>Boys over flower</h3>
+                    <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
+                </div>
+
             </div>
+        </section>
 
-        </div>
-    </div>
+        <!-- 3. NEXT PAGE (Contact & Group Links) -->
+        <section id="order-page">
+            <div class="order-box">
+                <h2>මිලදී ගැනීමට පහත Link එකක් තෝරන්න</h2>
+                
+                <!-- Group Link -->
+                <a href="https://chat.whatsapp.com/IZ0k2BuZxquDBLeVZ8HRXx?s=cl&p=a&mlu=0&ilr=0&amv=3" target="_blank" class="link-btn whatsapp-group">
+                    Join Our WhatsApp Group
+                </a>
 
-    <!-- PAGE 2: Next Page (Contact & Links) -->
-    <div id="contact-page" class="page">
-        <div class="contact-card">
-            <h2>ඇණවුම් කිරීමට සම්බන්ධ වන්න</h2>
-            <p style="margin-bottom: 20px; color: #ccc;">ඔයාට අවශ්‍ය TV Series එක ලබාගන්න පහත link එකෙන් Group එකට එකතු වෙන්න හෝ කෙලින්ම මාව සම්බන්ධ කරගන්න.</p>
-            
-            <!-- WhatsApp Group Link -->
-            <a href="https://chat.whatsapp.com/IZ0k2BuZxquDBLeVZ8HRXx?s=cl&p=a&mlu=0&ilr=0&amv=3" target="_blank" class="contact-btn btn-whatsapp">
-                <i class="fa-brands fa-whatsapp" style="font-size: 24px;"></i> Join Official WhatsApp Group
-            </a>
+                <!-- Personal Chat Link -->
+                <a href="https://wa.me/94772422982?text=Hi,%20I%20want%20to%20buy%20a%20TV%20Series" target="_blank" class="link-btn whatsapp-chat">
+                    Contact Seller (94772422982)
+                </a>
 
-            <!-- Direct Contact Number -->
-            <a href="https://wa.me/94772422982" target="_blank" class="contact-btn btn-phone">
-                <i class="fa-solid fa-comment-sms" style="font-size: 22px;"></i> WhatsApp Chat: 077 242 2982
-            </a>
-        </div>
+                <!-- Back to Home Button -->
+                <a href="#" class="link-btn back-btn" onclick="showPage('home-page')">Go Back</a>
+            </div>
+        </section>
+
     </div>
 
     <script>
-        // 1. Banner එක අයින් කරන Function එක
-        function closeBanner() {
-            document.getElementById('testingBanner').style.display = 'none';
+        // Alert එක අයින් කරන Function එක
+        function closeAlert() {
+            document.getElementById('testingAlert').style.display = 'none';
         }
 
-        // 2. Next Page එකට මාරু වෙන (Tab Switching) Function එක
-        function switchPage(pageName) {
-            document.getElementById('home-page').classList.remove('active');
-            document.getElementById('contact-page').classList.remove('active');
-            document.getElementById('btn-home').classList.remove('active');
-            document.getElementById('btn-contact').classList.remove('active');
-
-            if(pageName === 'home') {
-                document.getElementById('home-page').classList.add('active');
-                document.getElementById('btn-home').classList.add('active');
-            } else if(pageName === 'contact') {
-                document.getElementById('contact-page').classList.add('active');
-                document.getElementById('btn-contact').classList.add('active');
+        // පිටු මාරු කරන Function එක (Home <-> Next Page)
+        function showPage(pageId) {
+            if(pageId === 'home-page') {
+                document.getElementById('home-page').style.display = 'block';
+                document.getElementById('order-page').style.display = 'none';
+            } else {
+                document.getElementById('home-page').style.display = 'none';
+                document.getElementById('order-page').style.display = 'block';
             }
+            // පිටු මාරු වෙද්දි උඩටම Scroll වෙන්න
             window.scrollTo(0, 0);
         }
 
-        // 3. Instant Search Function එක
+        // TV Series Search කරන Function එක
         function searchSeries() {
-            let input = document.getElementById('searchBar').value.toLowerCase();
-            let cards = document.getElementsByClassName('movie-card');
-            let grid = document.getElementById('moviesGrid');
-            let hasResults = false;
-
-            let oldMsg = document.getElementById('noResultsMsg');
-            if(oldMsg) oldMsg.remove();
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('series-card');
 
             for (let i = 0; i < cards.length; i++) {
                 let title = cards[i].getAttribute('data-title');
                 if (title.includes(input)) {
                     cards[i].style.display = "block";
-                    hasResults = true;
                 } else {
                     cards[i].style.display = "none";
                 }
-            }
-
-            if (!hasResults) {
-                let noResultHTML = '<div id="noResultsMsg" class="no-results">Oops! ඒ වගේ TV Series එකක් හමු වුණේ නැහැ. 🛑</div>';
-                grid.insertAdjacentHTML('beforeend', noResultHTML);
             }
         }
     </script>
