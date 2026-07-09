@@ -126,16 +126,6 @@
             background-color: #b80710;
         }
 
-        .modal-btn-secondary {
-            background: none;
-            border: none;
-            color: #718096;
-            font-size: 14px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-
         /* Navigation Bar */
         nav {
             background-color: #000;
@@ -198,7 +188,6 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
-        /* ─── NEW CATEGORY BUTTONS STYLE ─── */
         .category-tabs {
             display: flex;
             justify-content: center;
@@ -230,7 +219,7 @@
             box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
         }
 
-        /* TV Series Grid */
+        /* Items Grid */
         .series-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -284,7 +273,55 @@
             background-color: #128C7E;
         }
 
-        /* Next Page Section */
+        /* Request Form Section */
+        .request-section {
+            background-color: #1f1f1f;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .request-section h2 {
+            color: #ffcc00;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+
+        .request-form {
+            display: flex;
+            flex-direction: column;
+            max-width: 500px;
+            margin: 20px auto 0 auto;
+            gap: 12px;
+        }
+
+        .request-form input {
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background-color: #2b2b2b;
+            color: white;
+            font-size: 15px;
+        }
+
+        .request-form button {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .request-form button:hover {
+            background-color: #b80710;
+        }
+
+        /* Order Page Section */
         #order-page {
             display: none;
             text-align: center;
@@ -307,14 +344,29 @@
             font-size: 22px;
         }
 
+        .contact-row {
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .badge.owner { background-color: #e50914; color: white; }
+        .badge.admin { background-color: #007bff; color: white; }
+
         .link-btn {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
-            padding: 15px;
-            margin: 15px 0;
-            font-size: 18px;
+            padding: 14px;
+            font-size: 16px;
             font-weight: bold;
             text-decoration: none;
             color: white;
@@ -322,26 +374,67 @@
             transition: 0.3s;
         }
 
-        .whatsapp-group {
-            background-color: #128C7E;
+        .whatsapp-group { background-color: #128C7E; margin-bottom: 25px;}
+        .whatsapp-group:hover { background-color: #075E54; }
+
+        .whatsapp-chat { background-color: #25D366; }
+        .whatsapp-chat:hover { background-color: #1fc75b; }
+
+        .back-btn { background-color: #444; margin-top: 25px; }
+        .back-btn:hover { background-color: #555; }
+
+        /* Secret Admin Dashboard */
+        .admin-toggle-btn {
+            background: none;
+            border: none;
+            color: #444;
+            font-size: 12px;
+            margin-top: 40px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
         }
-        .whatsapp-group:hover {
-            background-color: #075E54;
+        
+        .admin-panel {
+            display: none;
+            background-color: #0d0d0d;
+            border: 1px dashed #e50914;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
         }
 
-        .whatsapp-chat {
-            background-color: #25D366;
-        }
-        .whatsapp-chat:hover {
-            background-color: #1fc75b;
+        .admin-panel h3 { color: #e50914; margin-bottom: 15px; font-size: 18px;}
+        
+        .request-list {
+            list-style: none;
+            padding: 0;
         }
 
-        .back-btn {
-            background-color: #444;
-            margin-top: 25px;
+        .request-list li {
+            background-color: #1a1a1a;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            border-left: 3px solid #ffcc00;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
         }
-        .back-btn:hover {
+
+        .clear-btn {
             background-color: #555;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -360,7 +453,6 @@
                 <span class="tag">📺 TV Series Added</span>
             </div>
             <button class="modal-btn-primary" onclick="closeModal()">Visit Store</button>
-            <button class="modal-btn-secondary" onclick="closeModal()">Maybe Later</button>
         </div>
     </div>
 
@@ -381,7 +473,7 @@
                     <input type="text" id="searchInput" placeholder="සීරීස් එකක් හෝ මූවී එකක් සර්ච් කරන්න..." onkeyup="filterItems()">
                 </div>
 
-                <!-- කැටගරි ටැබ්ස් ටික (Category Tabs) -->
+                <!-- කැටගරි ටැබ්ස් -->
                 <div class="category-tabs">
                     <button class="tab-btn active" onclick="filterCategory('all', this)">All</button>
                     <button class="tab-btn" onclick="filterCategory('tv', this)">TV Series</button>
@@ -389,83 +481,78 @@
                 </div>
             </div>
 
-            <!-- Items Grid (TV Series & Movies ඔක්කොම මෙතන තියෙන්නේ) -->
-            <!-- data-type="tv" හෝ data-type="movie" මඟින් කැටගරි වෙන් වේ -->
+            <!-- Items Grid -->
             <div class="series-grid" id="seriesGrid">
                 
-                <!-- [TV SERIES] 1. Money Heist -->
+                <!-- [TV SERIES] 1 -->
                 <div class="series-card" data-type="tv" data-title="money heist">
                     <img src="https://i.ibb.co/cc2VMzJM/IMG-20260516-WA0019.jpg" alt="Money Heist">
                     <h3>Money Heist (TV)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- [TV SERIES] 2. Game of Thrones -->
+                <!-- [TV SERIES] 2 -->
                 <div class="series-card" data-type="tv" data-title="game of thrones">
                     <img src="https://i.ibb.co/39GHzrPG/IMG-20260403-WA0010.jpg" alt="Game of Thrones">
                     <h3>Game of Thrones (TV)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- [TV SERIES] 3. Cobra Kai -->
+                <!-- [TV SERIES] 3 -->
                 <div class="series-card" data-type="tv" data-title="cobra kai">
                     <img src="https://i.ibb.co/1JQKv7zQ/IMG-20260522-WA0036.jpg" alt="Cobra Kai">
                     <h3>Cobra Kai (TV)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- [TV SERIES] 4. Stranger Things -->
+                <!-- [TV SERIES] 4 -->
                 <div class="series-card" data-type="tv" data-title="strange things stranger things">
                     <img src="https://i.ibb.co/8gVSV7mS/IMG-20260519-WA0023.jpg" alt="Stranger Things">
                     <h3>Stranger Things (TV)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- [TV SERIES] 5. High school Return of gangster -->
+                <!-- [TV SERIES] 5 -->
                 <div class="series-card" data-type="tv" data-title="high school return of gangster kdrama">
                     <img src="https://i.ibb.co/gZQD7zC8/IMG-20260708-WA0025.jpg" alt="High school Return of gangster">
                     <h3>High school Return of gangster</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- [TV SERIES] 6. Every which way -->
+                <!-- [TV SERIES] 6 -->
                 <div class="series-card" data-type="tv" data-title="every which way">
                     <img src="https://i.ibb.co/Hf9FKMVp/IMG-20260708-183359-408.jpg" alt="Every which way">
                     <h3>Every which way (TV)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- [TV SERIES] 7. Himanthara -->
+                <!-- [TV SERIES] 7 -->
                 <div class="series-card" data-type="tv" data-title="himanthara tele drama">
                     <img src="https://i.ibb.co/G33qVZdY/IMG-20260708-183417-086.jpg" alt="Himanthara">
                     <h3>Himanthara (Tele)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- [TV SERIES] 8. Boys over flower -->
+                <!-- [TV SERIES] 8 -->
                 <div class="series-card" data-type="tv" data-title="boys over flower kdrama">
                     <img src="https://i.ibb.co/ynrK6Zhg/IMG-20260708-183440-863.jpg" alt="Boys over flower">
                     <h3>Boys over flower (TV)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- ─── මෙතන ඉඳන් තියෙන්නේ MOVIES ─── -->
-                
-                <!-- [MOVIE] 1. Avatar -->
+                <!-- MOVIES -->
                 <div class="series-card" data-type="movie" data-title="avatar movie">
                     <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500" alt="Avatar">
                     <h3>Avatar (Movie)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- [MOVIE] 2. Deadpool -->
                 <div class="series-card" data-type="movie" data-title="deadpool movie">
                     <img src="https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=500" alt="Deadpool">
                     <h3>Deadpool (Movie)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- [MOVIE] 3. Avengers -->
                 <div class="series-card" data-type="movie" data-title="avengers movie">
                     <img src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=500" alt="Avengers">
                     <h3>Avengers (Movie)</h3>
@@ -473,20 +560,63 @@
                 </div>
 
             </div>
+
+            <!-- MOVIE REQUEST SYSTEM -->
+            <div class="request-section">
+                <h2>Request Your Favorite Movie / TV Series 🎬</h2>
+                <p>ඔයාට අවශ්‍ය කරන මූවී එකක් හෝ ටීවී සීරීස් එකක් තියෙනවා නම් නම මෙතනින් අපිට එවන්න!</p>
+                <div class="request-form">
+                    <input type="text" id="movieRequestInput" placeholder="Movie / TV Series Name...">
+                    <button onclick="submitRequest()">Submit Request</button>
+                </div>
+            </div>
+            
+            <!-- SECRET ADMIN AREA ENTRY -->
+            <button class="admin-toggle-btn" onclick="openAdminPanel()">🔒 Admin Dashboard (Owner Only)</button>
+            
+            <div class="admin-panel" id="adminPanel">
+                <h3>Requested Movies List</h3>
+                <ul class="request-list" id="requestList">
+                    <!-- මෙතනට තමා Request කරන ඒව වැටෙන්නේ -->
+                </ul>
+                <button class="clear-btn" onclick="clearRequests()">Clear All Requests</button>
+            </div>
+
         </section>
 
-        <!-- NEXT PAGE -->
+        <!-- NEXT PAGE (ORDER PAGE) -->
         <section id="order-page">
             <div class="order-box">
-                <h2>මිලදී ගැනීමට පහත Link එකක් තෝරන්න</h2>
+                <h2>මිලදී ගැනීමට අපව සම්බන්ධ කරගන්න</h2>
                 
+                <!-- 1. WHATSAPP GROUP LINK -->
                 <a href="https://chat.whatsapp.com/IZ0k2BuZxquDBLeVZ8HRXx?s=cl&p=a&mlu=0&ilr=0&amv=3" target="_blank" class="link-btn whatsapp-group">
                     Join Our WhatsApp Group
                 </a>
 
-                <a href="https://wa.me/94772422982?text=Hi,%20I%20want%20to%20buy" target="_blank" class="link-btn whatsapp-chat">
-                    Contact Seller (94772422982)
-                </a>
+                <!-- 2. OWNER CONTACT -->
+                <div class="contact-row">
+                    <span class="badge owner">Owner</span>
+                    <a href="https://wa.me/94772422982?text=Hi%20Owner,%20I%20want%20to%20buy%20a%20movie" target="_blank" class="link-btn whatsapp-chat">
+                        Contact Owner (94772422982)
+                    </a>
+                </div>
+
+                <!-- 3. ADMIN 1 CONTACT -->
+                <div class="contact-row">
+                    <span class="badge admin">Admin 1</span>
+                    <a href="https://wa.me/94721353440?text=Hi%20Admin,%20I%20want%20to%20buy%20a%20movie" target="_blank" class="link-btn whatsapp-chat" style="background-color: #007bff;">
+                        Contact Admin (94721353440)
+                    </a>
+                </div>
+
+                <!-- 4. ADMIN 2 CONTACT -->
+                <div class="contact-row">
+                    <span class="badge admin">Admin 2</span>
+                    <a href="https://wa.me/94724098953?text=Hi%20Admin,%20I%20want%20to%20buy%20a%20movie" target="_blank" class="link-btn whatsapp-chat" style="background-color: #007bff;">
+                        Contact Admin (94724098953)
+                    </a>
+                </div>
 
                 <a href="#" class="link-btn back-btn" onclick="showPage('home-page')">Go Back</a>
             </div>
@@ -495,7 +625,6 @@
     </div>
 
     <script>
-        // දැනට තෝරලා තියෙන කැටගරිය මතක තියාගන්න (Default 'all')
         let currentCategory = 'all';
 
         function closeModal() {
@@ -516,22 +645,16 @@
             window.scrollTo(0, 0);
         }
 
-        // කැටගරි බටන් ක්ලික් කරද්දි වැඩ කරන Function එක
         function filterCategory(category, element) {
             currentCategory = category;
-            
-            // Active බටන් එකේ පාට මාරු කිරීම
             let buttons = document.getElementsByClassName('tab-btn');
             for(let btn of buttons) {
                 btn.classList.remove('active');
             }
             element.classList.add('active');
-            
-            // අයිතම ෆිල්ටර් කිරීම සිදුවේ
             filterItems();
         }
 
-        // සර්ච් එක සහ කැටගරි දෙකම එකතු කරලා ෆිල්ටර් කරන ප්‍රධාන Function එක
         function filterItems() {
             let searchInput = document.getElementById('searchInput').value.toLowerCase();
             let cards = document.getElementsByClassName('series-card');
@@ -540,17 +663,88 @@
                 let cardType = cards[i].getAttribute('data-type');
                 let cardTitle = cards[i].getAttribute('data-title');
                 
-                // කැටගරි එක ගැලපෙනවද බලන්න
                 let matchCategory = (currentCategory === 'all' || cardType === currentCategory);
-                // සර්ච් කරපු නම ගැලපෙනවද බලන්න
                 let matchSearch = cardTitle.includes(searchInput);
 
-                // කොන්දේසි දෙකම හරි නම් විතරක් පෙන්වන්න
                 if (matchCategory && matchSearch) {
                     cards[i].style.display = "block";
                 } else {
                     cards[i].style.display = "none";
                 }
+            }
+        }
+
+        // ─── MOVIE REQUEST FUNCTIONS ───
+        
+        // සයිට් එක ලෝඩ් වෙද්දීම කලින් සේව් කරපු රික්වෙස්ට් තියෙනවද බලනවා
+        window.onload = function() {
+            displayRequests();
+        }
+
+        function submitRequest() {
+            let movieName = document.getElementById('movieRequestInput').value.trim();
+            
+            if(movieName === "") {
+                alert("කරුණාකර Movie එකේ නම ඇතුලත් කරන්න!");
+                return;
+            }
+
+            // LocalStorage එකේ ලිස්ට් එක සේව් කරගන්නවා (සයිට් එක රීෆ්‍රෙෂ් කරත් මැකෙන්නේ නෑ)
+            let existingRequests = JSON.parse(localStorage.getItem('movieRequests')) || [];
+            
+            let newRequest = {
+                id: Date.now(),
+                name: movieName,
+                date: new Date().toLocaleDateString()
+            };
+
+            existingRequests.push(newRequest);
+            localStorage.setItem('movieRequests', JSON.stringify(existingRequests));
+            
+            alert("ඔයාගේ Request එක ලැබුණා! ස්තූතියි.");
+            document.getElementById('movieRequestInput').value = "";
+            displayRequests();
+        }
+
+        function displayRequests() {
+            let existingRequests = JSON.parse(localStorage.getItem('movieRequests')) || [];
+            let listContainer = document.getElementById('requestList');
+            
+            listContainer.innerHTML = "";
+            
+            if(existingRequests.length === 0) {
+                listContainer.innerHTML = "<li style='color: #718096;'>තවමත් කිසිදු රික්වෙස්ට් එකක් ලැබී නැත.</li>";
+                return;
+            }
+
+            existingRequests.forEach(req => {
+                let li = document.createElement('li');
+                li.innerHTML = `<span>🎬 <b>${req.name}</b></span> <span style='color: #718096; font-size:11px;'>${req.date}</span>`;
+                listContainer.appendChild(li);
+            });
+        }
+
+        function openAdminPanel() {
+            let password = prompt("Admin Dashboard එකට ඇතුල් වීමට මුරපදය (Password) ඇතුලත් කරන්න:");
+            
+            // Default Password එක 'admin123'
+            if(password === "admin123") {
+                let panel = document.getElementById('adminPanel');
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                    displayRequests();
+                }
+            } else if(password !== null) {
+                alert("වැරදි මුරපදයක්! නැවත උත්සාහ කරන්න.");
+            }
+        }
+
+        function clearRequests() {
+            if(confirm("විශ්වාසද? ඔක්කොම රික්වෙස්ට් ටික මකන්නද?")) {
+                localStorage.removeItem('movieRequests');
+                displayRequests();
             }
         }
     </script>
