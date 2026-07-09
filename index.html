@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TV Series Zone</title>
+    <title>TV Series & Movie Zone</title>
     <style>
         * {
             margin: 0;
@@ -17,7 +17,7 @@
             color: #ffffff;
         }
 
-        /* ─── 1. NEW POPUP MODAL STYLE (SCREENSHOT එක වගේ) ─── */
+        /* 1. POPUP MODAL STYLE */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -34,7 +34,7 @@
         }
 
         .modal-box {
-            background-color: #1a2232; /* ඩාර්ක් බ්ලූ/බ්ලැක් ටෝන් එක */
+            background-color: #1a2232;
             width: 90%;
             max-width: 420px;
             padding: 35px 25px;
@@ -67,7 +67,6 @@
             color: #fff;
         }
 
-        /* Warning/Testing Icon Style */
         .modal-icon {
             font-size: 55px;
             color: #ffcc00;
@@ -89,7 +88,6 @@
             margin-bottom: 25px;
         }
 
-        /* Tags Area */
         .modal-tags {
             display: flex;
             justify-content: center;
@@ -111,7 +109,7 @@
         .modal-btn-primary {
             display: block;
             width: 100%;
-            background-color: #e50914; /* Store එක නිසා රතු පාට දැම්මා */
+            background-color: #e50914;
             color: white;
             border: none;
             padding: 14px;
@@ -137,12 +135,6 @@
             font-weight: 600;
             transition: 0.2s;
         }
-
-        .modal-btn-secondary:hover {
-            color: #a0aec0;
-        }
-
-        /* ────────────────────────────────────────────────── */
 
         /* Navigation Bar */
         nav {
@@ -182,16 +174,16 @@
             padding: 0 20px;
         }
 
-        #home-page {
-            display: block;
+        /* Search Bar & Categories Wrapper */
+        .controls-wrapper {
+            margin-bottom: 40px;
+            text-align: center;
         }
 
-        /* Search Bar */
         .search-box {
             width: 100%;
             max-width: 500px;
-            margin: 0 auto 40px auto;
-            display: flex;
+            margin: 0 auto 20px auto;
         }
 
         .search-box input {
@@ -199,11 +191,43 @@
             padding: 14px;
             font-size: 16px;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             outline: none;
             color: #000;
             background-color: #fff;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        /* ─── NEW CATEGORY BUTTONS STYLE ─── */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .tab-btn {
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 10px 25px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .tab-btn:hover {
+            border-color: #e50914;
+            color: #e50914;
+        }
+
+        .tab-btn.active {
+            background-color: #e50914;
+            color: #fff;
+            border-color: #e50914;
+            box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
         }
 
         /* TV Series Grid */
@@ -323,36 +347,26 @@
 </head>
 <body>
 
-    <!-- 1. POPUP MODAL (SCREENSHOT එකේ විදිහට) -->
+    <!-- 1. POPUP MODAL -->
     <div class="modal-overlay" id="testingModal">
         <div class="modal-box">
-            <!-- කතිරෙන් අයින් කරන්න බටන් එක -->
             <button class="modal-close-x" onclick="closeModal()">×</button>
-            
-            <!-- Warning ලකුණ -->
             <div class="modal-icon">⚠️</div>
-            
             <h2>Under Testing!</h2>
-            <p>මෙම වෙබ් අඩවිය දැනට පරික්ෂණ මට්ටමේ (Testing) පවතී. ඉදිරියේදී තව බොහෝ දේ ඇතුලත් වනු ඇත!</p>
-            
-            <!-- පොඩි ටැග්ස් 3ක් -->
+            <p>මෙම වෙබ් අඩවිය දැනට පරික්ෂණ මට්ටමේ (Testing) පවතී. දැන් ඔබට Movies සහ TV Series වෙන වෙනම බලාගත හැක!</p>
             <div class="modal-tags">
                 <span class="tag">⚡ Testing Mode</span>
-                <span class="tag">🚀 New Features Soon</span>
-                <span class="tag">🎬 Movies Coming</span>
+                <span class="tag">🎬 Movies Added</span>
+                <span class="tag">📺 TV Series Added</span>
             </div>
-
-            <!-- Main Button එක -->
             <button class="modal-btn-primary" onclick="closeModal()">Visit Store</button>
-            
-            <!-- පල්ලෙහා බටන් එකෙන් අයින් කරන්න -->
             <button class="modal-btn-secondary" onclick="closeModal()">Maybe Later</button>
         </div>
     </div>
 
     <!-- Navigation Header -->
     <nav>
-        <h1>TV Series Store</h1>
+        <h1>TV & Movie Store</h1>
         <button onclick="showPage('order-page')">Order Now</button>
     </nav>
 
@@ -360,65 +374,101 @@
         
         <!-- HOME PAGE -->
         <section id="home-page">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="ඔබට අවශ්‍ය TV Series එකක් Search කරන්න..." onkeyup="searchSeries()">
+            
+            <div class="controls-wrapper">
+                <!-- Search Bar -->
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="සීරීස් එකක් හෝ මූවී එකක් සර්ච් කරන්න..." onkeyup="filterItems()">
+                </div>
+
+                <!-- කැටගරි ටැබ්ස් ටික (Category Tabs) -->
+                <div class="category-tabs">
+                    <button class="tab-btn active" onclick="filterCategory('all', this)">All</button>
+                    <button class="tab-btn" onclick="filterCategory('tv', this)">TV Series</button>
+                    <button class="tab-btn" onclick="filterCategory('movie', this)">Movies</button>
+                </div>
             </div>
 
+            <!-- Items Grid (TV Series & Movies ඔක්කොම මෙතන තියෙන්නේ) -->
+            <!-- data-type="tv" හෝ data-type="movie" මඟින් කැටගරි වෙන් වේ -->
             <div class="series-grid" id="seriesGrid">
                 
-                <!-- 1. Money Heist -->
-                <div class="series-card" data-title="money heist">
+                <!-- [TV SERIES] 1. Money Heist -->
+                <div class="series-card" data-type="tv" data-title="money heist">
                     <img src="https://i.ibb.co/cc2VMzJM/IMG-20260516-WA0019.jpg" alt="Money Heist">
-                    <h3>Money Heist</h3>
+                    <h3>Money Heist (TV)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- 2. Game of Thrones -->
-                <div class="series-card" data-title="game of thrones">
+                <!-- [TV SERIES] 2. Game of Thrones -->
+                <div class="series-card" data-type="tv" data-title="game of thrones">
                     <img src="https://i.ibb.co/39GHzrPG/IMG-20260403-WA0010.jpg" alt="Game of Thrones">
-                    <h3>Game of Thrones</h3>
+                    <h3>Game of Thrones (TV)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- 3. Cobra Kai -->
-                <div class="series-card" data-title="cobra kai">
+                <!-- [TV SERIES] 3. Cobra Kai -->
+                <div class="series-card" data-type="tv" data-title="cobra kai">
                     <img src="https://i.ibb.co/1JQKv7zQ/IMG-20260522-WA0036.jpg" alt="Cobra Kai">
-                    <h3>Cobra Kai</h3>
+                    <h3>Cobra Kai (TV)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- 4. Stranger Things -->
-                <div class="series-card" data-title="strange things stranger things">
+                <!-- [TV SERIES] 4. Stranger Things -->
+                <div class="series-card" data-type="tv" data-title="strange things stranger things">
                     <img src="https://i.ibb.co/8gVSV7mS/IMG-20260519-WA0023.jpg" alt="Stranger Things">
-                    <h3>Stranger Things</h3>
+                    <h3>Stranger Things (TV)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- 5. High school Return of gangster -->
-                <div class="series-card" data-title="high school return of gangster kdrama">
+                <!-- [TV SERIES] 5. High school Return of gangster -->
+                <div class="series-card" data-type="tv" data-title="high school return of gangster kdrama">
                     <img src="https://i.ibb.co/gZQD7zC8/IMG-20260708-WA0025.jpg" alt="High school Return of gangster">
                     <h3>High school Return of gangster</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- 6. Every which way -->
-                <div class="series-card" data-title="every which way">
+                <!-- [TV SERIES] 6. Every which way -->
+                <div class="series-card" data-type="tv" data-title="every which way">
                     <img src="https://i.ibb.co/Hf9FKMVp/IMG-20260708-183359-408.jpg" alt="Every which way">
-                    <h3>Every which way</h3>
+                    <h3>Every which way (TV)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- 7. Himanthara -->
-                <div class="series-card" data-title="himanthara tele drama">
+                <!-- [TV SERIES] 7. Himanthara -->
+                <div class="series-card" data-type="tv" data-title="himanthara tele drama">
                     <img src="https://i.ibb.co/G33qVZdY/IMG-20260708-183417-086.jpg" alt="Himanthara">
-                    <h3>Himanthara</h3>
+                    <h3>Himanthara (Tele)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
-                <!-- 8. Boys over flower -->
-                <div class="series-card" data-title="boys over flower kdrama">
+                <!-- [TV SERIES] 8. Boys over flower -->
+                <div class="series-card" data-type="tv" data-title="boys over flower kdrama">
                     <img src="https://i.ibb.co/ynrK6Zhg/IMG-20260708-183440-863.jpg" alt="Boys over flower">
-                    <h3>Boys over flower</h3>
+                    <h3>Boys over flower (TV)</h3>
+                    <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
+                </div>
+
+                <!-- ─── මෙතන ඉඳන් තියෙන්නේ MOVIES ─── -->
+                
+                <!-- [MOVIE] 1. Avatar -->
+                <div class="series-card" data-type="movie" data-title="avatar movie">
+                    <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500" alt="Avatar">
+                    <h3>Avatar (Movie)</h3>
+                    <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
+                </div>
+
+                <!-- [MOVIE] 2. Deadpool -->
+                <div class="series-card" data-type="movie" data-title="deadpool movie">
+                    <img src="https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=500" alt="Deadpool">
+                    <h3>Deadpool (Movie)</h3>
+                    <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
+                </div>
+
+                <!-- [MOVIE] 3. Avengers -->
+                <div class="series-card" data-type="movie" data-title="avengers movie">
+                    <img src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=500" alt="Avengers">
+                    <h3>Avengers (Movie)</h3>
                     <button class="buy-btn" onclick="showPage('order-page')">Buy Now</button>
                 </div>
 
@@ -434,7 +484,7 @@
                     Join Our WhatsApp Group
                 </a>
 
-                <a href="https://wa.me/94772422982?text=Hi,%20I%20want%20to%20buy%20a%20TV%20Series" target="_blank" class="link-btn whatsapp-chat">
+                <a href="https://wa.me/94772422982?text=Hi,%20I%20want%20to%20buy" target="_blank" class="link-btn whatsapp-chat">
                     Contact Seller (94772422982)
                 </a>
 
@@ -445,15 +495,16 @@
     </div>
 
     <script>
-        // Popup එක වහන Function එක
+        // දැනට තෝරලා තියෙන කැටගරිය මතක තියාගන්න (Default 'all')
+        let currentCategory = 'all';
+
         function closeModal() {
             document.getElementById('testingModal').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('testingModal').style.display = 'none';
-            }, 300); // fade out වෙන්න පොඩි වෙලාවක් දීම
+            }, 300);
         }
 
-        // පිටු මාරු කරන Function එක
         function showPage(pageId) {
             if(pageId === 'home-page') {
                 document.getElementById('home-page').style.display = 'block';
@@ -465,14 +516,37 @@
             window.scrollTo(0, 0);
         }
 
-        // Search Function එක
-        function searchSeries() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
+        // කැටගරි බටන් ක්ලික් කරද්දි වැඩ කරන Function එක
+        function filterCategory(category, element) {
+            currentCategory = category;
+            
+            // Active බටන් එකේ පාට මාරු කිරීම
+            let buttons = document.getElementsByClassName('tab-btn');
+            for(let btn of buttons) {
+                btn.classList.remove('active');
+            }
+            element.classList.add('active');
+            
+            // අයිතම ෆිල්ටර් කිරීම සිදුවේ
+            filterItems();
+        }
+
+        // සර්ච් එක සහ කැටගරි දෙකම එකතු කරලා ෆිල්ටර් කරන ප්‍රධාන Function එක
+        function filterItems() {
+            let searchInput = document.getElementById('searchInput').value.toLowerCase();
             let cards = document.getElementsByClassName('series-card');
 
             for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].getAttribute('data-title');
-                if (title.includes(input)) {
+                let cardType = cards[i].getAttribute('data-type');
+                let cardTitle = cards[i].getAttribute('data-title');
+                
+                // කැටගරි එක ගැලපෙනවද බලන්න
+                let matchCategory = (currentCategory === 'all' || cardType === currentCategory);
+                // සර්ච් කරපු නම ගැලපෙනවද බලන්න
+                let matchSearch = cardTitle.includes(searchInput);
+
+                // කොන්දේසි දෙකම හරි නම් විතරක් පෙන්වන්න
+                if (matchCategory && matchSearch) {
                     cards[i].style.display = "block";
                 } else {
                     cards[i].style.display = "none";
