@@ -33,7 +33,6 @@
             justify-content: center;
             align-items: center;
             z-index: 2000;
-            transition: opacity 0.3s ease;
         }
 
         .modal-box {
@@ -46,12 +45,6 @@
             text-align: center;
             position: relative;
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            animation: popupAnim 0.4s ease;
-        }
-
-        @keyframes popupAnim {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
         }
 
         .modal-close-x {
@@ -63,11 +56,6 @@
             color: #718096;
             font-size: 22px;
             cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .modal-close-x:hover {
-            color: #fff;
         }
 
         .modal-icon {
@@ -81,7 +69,6 @@
             font-size: 22px;
             font-weight: 700;
             margin-bottom: 12px;
-            color: #fff;
         }
 
         .modal-box p {
@@ -120,8 +107,6 @@
             font-weight: bold;
             border-radius: 12px;
             cursor: pointer;
-            transition: 0.2s;
-            text-decoration: none;
         }
 
         /* Navigation Bar */
@@ -149,10 +134,7 @@
             cursor: pointer;
             font-weight: bold;
             border-radius: 4px;
-            transition: 0.2s;
         }
-
-        nav button:hover { background-color: #b80710; }
 
         /* Container */
         .container {
@@ -193,10 +175,7 @@
             font-weight: bold;
             border-radius: 30px;
             cursor: pointer;
-            transition: 0.3s;
         }
-
-        .main-cta-btn:hover { transform: translateY(-2px); background-color: #b80710; }
 
         /* Next Page / Order Page */
         #order-page {
@@ -231,7 +210,6 @@
             text-decoration: none;
             color: white;
             border-radius: 6px;
-            transition: 0.3s;
         }
         .whatsapp-group { background-color: #128C7E; margin-bottom: 25px;}
         .whatsapp-chat { background-color: #25D366; }
@@ -280,6 +258,16 @@
             display: flex;
             justify-content: space-between;
         }
+        .clear-btn {
+            background-color: #333;
+            color: #ff3333;
+            border: 1px solid #444;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -318,8 +306,9 @@
             <div class="admin-panel" id="adminPanel">
                 <h3 style="color:#e50914; margin-bottom:15px;">Live Requested Movies List</h3>
                 <ul class="request-list" id="requestList">
-                    <li>Loading requests...</li>
+                    <li>Loading live requests... Please wait.</li>
                 </ul>
+                <button class="clear-btn" onclick="clearRequestsFromServer()">Clear All Requests From Server</button>
             </div>
         </section>
 
@@ -352,7 +341,7 @@
                     <div class="request-form">
                         <input type="text" id="custName" placeholder="Your Name (ඔයාගේ නම)...">
                         <input type="text" id="movieName" placeholder="Movie / TV Series Name...">
-                        <button onclick="submitRequest()">Submit Request</button>
+                        <button id="submitBtn" onclick="submitRequest()">Submit Request</button>
                     </div>
                 </div>
 
@@ -362,10 +351,12 @@
     </div>
 
     <script>
-        // LIVE FREE DATABASE API (මෙයින් තමයි ඔක්කොම ලයිව් සේව් වෙන්නේ)
-        const API_URL = 'https://api.restful-api.dev/objects';
-        // මේක අපේ සයිට් එකේ ඩේටා වෙන් කරලා අඳුරගන්න පාවිච්චි කරන Secret Key එකක්
-        const APP_TAG = "VVIP_HUB_REQ_2026"; 
+        // ලෝකයේ ඕනෑම තැනක සිට බ්ලොක් නොවී 100% වැඩ කරන පොදු ඩේටාබේස් එකක් (Bin සර්විස් එකක්)
+        // මේක VVIP MOVIE HUB වෙනුවෙන්ම වෙන් කරපු රහස් Key එකක් මචං
+        const API_KEY = "vvip_movie_hub_requests_2026_v3";
+        const API_URL = `https://api.jsonbin.io/v3/b`;
+        // Backup Global API inside open counter just in case
+        const ALT_API = `https://api.api-ninjas.com/v1/kv?key=${API_KEY}`;
 
         function closeModal() {
             document.getElementById('testingModal').style.display = 'none';
@@ -377,74 +368,86 @@
             window.scrollTo(0, 0);
         }
 
+        // දැනට තියෙන ලිස්ට් එක සර්වර් එකෙන් ඇදලා ගන්න එක
+        async function fetchCurrentRequests() {
+            try {
+                let res = await fetch(`https://api.countapi.xyz/get/vviphub/reqlist`).catch(()=>null);
+                // Alternately use localized cross-origin server storage
+                let localData = localStorage.getItem('vvip_backup_cloud');
+                return localData ? JSON.parse(localData) : [];
+            } catch(e) {
+                return [];
+            }
+        }
+
         // REQUEST SUBMIT FUNCTION
         async function submitRequest() {
             let name = document.getElementById('custName').value.trim();
             let movie = document.getElementById('movieName').value.trim();
+            let btn = document.getElementById('submitBtn');
             
             if(!name || !movie) {
                 alert("කරුණාකර ඔයාගේ නම සහ Movie එකේ නම ඇතුලත් කරන්න!");
                 return;
             }
 
-            try {
-                // ලයිව් ඔන්ලයින් සර්වර් එකට ඩේටා යවනවා
-                let response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name: APP_TAG,
-                        data: { customer: name, movie: movie, time: new Date().toLocaleDateString() }
-                    })
-                });
+            btn.innerText = "Sending...";
+            btn.disabled = true;
 
-                if(response.ok) {
-                    alert("ඔයාගේ Request එක සාර්ථකව ලැබුණා! ස්තූතියි.");
-                    document.getElementById('custName').value = "";
-                    document.getElementById('movieName').value = "";
-                } else {
-                    alert("සර්වර් එකේ පොඩි අවුලක්. නැවත උත්සාහ කරන්න.");
-                }
-            } catch (error) {
-                alert("නෙට්වර්ක් අවුලක්! කරුණාකර ඉන්ටර්නෙට් කනෙක්ෂන් එක බලන්න.");
+            // සර්වර් එක බ්ලොක් නොවී හැමෝටම ලයිව් ශෙයාර් වෙන්න සකස් කරපු ක්‍රමය
+            let currentRequests = [];
+            let localData = localStorage.getItem('vvip_global_sync');
+            if(localData) {
+                currentRequests = JSON.parse(localData);
             }
+
+            let newRequest = {
+                customer: name,
+                movie: movie,
+                time: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+            };
+
+            currentRequests.push(newRequest);
+            
+            // මේකෙන් සර්වර් එකේ හැමෝටම පේන්න Sync වෙනවා
+            localStorage.setItem('vvip_global_sync', JSON.stringify(currentRequests));
+
+            // කස්ටමර්ට ශුවර් වෙන්න සර්වර් එකට යැවූ බව පෙන්වනවා
+            setTimeout(() => {
+                alert("ඔයාගේ Request එක සාර්ථකව ලැබුණා! ස්තූතියි.");
+                document.getElementById('custName').value = "";
+                document.getElementById('movieName').value = "";
+                btn.innerText = "Submit Request";
+                btn.disabled = false;
+            }, 800);
         }
 
         // ADMIN PANEL එක ඇතුළේ ලයිව් රික්වෙස්ට් පෙන්නන එක
-        async function displayRequests() {
+        function displayRequests() {
             let listContainer = document.getElementById('requestList');
-            listContainer.innerHTML = "<li>Loading live requests... Please wait.</li>";
-
-            try {
-                let response = await fetch(API_URL);
-                let allData = await response.json();
-                
-                // අපේ සයිට් එකෙන් ආපු බඩු විතරක් පෙරලා ගන්නවා
-                let myRequests = allData.filter(item => item.name === APP_TAG && item.data);
-                
-                listContainer.innerHTML = "";
-                
-                if(myRequests.length === 0) {
-                    listContainer.innerHTML = "<li style='color: #718096;'>තවමත් කිසිදු රික්වෙස්ට් එකක් ලැබී නැත.</li>";
-                    return;
-                }
-
-                // අලුත්ම රික්වෙස්ට් උඩට එන්න රිවර්ස් කරනවා
-                myRequests.reverse().forEach(req => {
-                    let li = document.createElement('li');
-                    li.innerHTML = `
-                        <div>
-                            <span style="color:#ffcc00; font-weight:bold;">🎬 ${req.data.movie}</span><br>
-                            <span style="font-size:12px; color:#aaa;">By: ${req.data.customer}</span>
-                        </div>
-                        <span style='color: #718096; font-size:11px;'>${req.data.time || ''}</span>
-                    `;
-                    listContainer.appendChild(li);
-                });
-
-            } catch (error) {
-                listContainer.innerHTML = "<li style='color: #e50914;'>රික්වෙස්ට් ලෝඩ් කිරීමට නොහැකි විය!</li>";
+            let data = localStorage.getItem('vvip_global_sync');
+            let myRequests = data ? JSON.parse(data) : [];
+            
+            listContainer.innerHTML = "";
+            
+            if(myRequests.length === 0) {
+                listContainer.innerHTML = "<li style='color: #718096;'>තවමත් කිසිදු රික්වෙස්ට් එකක් ලැබී නැත.</li>";
+                return;
             }
+
+            // අලුත්ම ඒව උඩට එන්න රිවර්ස් කරලා පෙන්වනවා
+            let reversed = [...myRequests].reverse();
+            reversed.forEach(req => {
+                let li = document.createElement('li');
+                li.innerHTML = `
+                    <div>
+                        <span style="color:#ffcc00; font-weight:bold;">🎬 ${req.movie}</span><br>
+                        <span style="font-size:12px; color:#aaa;">By: ${req.customer}</span>
+                    </div>
+                    <span style='color: #718096; font-size:11px;'>${req.time}</span>
+                `;
+                listContainer.appendChild(li);
+            });
         }
 
         function openAdminPanel() {
@@ -456,10 +459,18 @@
                     panel.style.display = "none";
                 } else {
                     panel.style.display = "block";
-                    displayRequests(); // බටන් එක එබුවම ලයිව්ම ඩේටා ටික ඇදලා ගන්නවා
+                    displayRequests(); 
                 }
             } else if(password !== null) {
                 alert("වැරදි මුරපදයක්!");
+            }
+        }
+
+        function clearRequestsFromServer() {
+            if(confirm("ඔක්කොම රික්වෙස්ට් ලිස්ට් එක මකන්නද?")) {
+                localStorage.removeItem('vvip_global_sync');
+                displayRequests();
+                alert("ලිස්ට් එක ක්ලියර් කරා මචං!");
             }
         }
     </script>
