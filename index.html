@@ -215,7 +215,7 @@
         .whatsapp-chat { background-color: #25D366; }
         .back-btn { background-color: #444; margin-top: 25px; }
 
-        /* Request Form */
+        /* Request Form Box */
         .request-section {
             background-color: #1a1a1a;
             border: 1px solid #333;
@@ -223,9 +223,23 @@
             padding: 30px;
             margin-top: 35px;
         }
-        .request-form { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
-        .request-form input { padding: 12px; border-radius: 6px; border: 1px solid #444; background-color: #2b2b2b; color: white; }
-        .request-form button { background-color: #e50914; color: white; border: none; padding: 12px; font-weight: bold; border-radius: 6px; cursor: pointer; }
+        
+        /* Google Form එක වෙබ් සයිට් එක ඇතුලටම දාන ක්‍රමය (Seamless Integration) */
+        .form-iframe-container {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background-color: #fff; /* Google Form එක සුදු පාට නිසා */
+        }
+        
+        .form-iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
 
         /* Admin Dashboard Section */
         .admin-toggle-btn {
@@ -243,30 +257,18 @@
             background-color: #0d0d0d;
             border: 1px dashed #e50914;
             border-radius: 8px;
-            padding: 20px;
-            max-width: 550px;
+            padding: 15px;
+            max-width: 700px;
             margin: 20px auto 0 auto;
             text-align: left;
         }
-        .request-list { list-style: none; }
-        .request-list li {
-            background-color: #1a1a1a;
-            padding: 12px;
+        
+        .sheet-iframe-container {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #222;
             border-radius: 4px;
-            margin-bottom: 8px;
-            border-left: 3px solid #ffcc00;
-            display: flex;
-            justify-content: space-between;
-        }
-        .clear-btn {
-            background-color: #333;
-            color: #ff3333;
-            border: 1px solid #444;
-            padding: 6px 12px;
-            cursor: pointer;
-            border-radius: 4px;
-            margin-top: 15px;
-            font-size: 12px;
+            background-color: #fff;
         }
     </style>
 </head>
@@ -297,18 +299,19 @@
         <section id="home-page">
             <div class="welcome-box">
                 <h2>Welcome to VVIP MOVIE HUB 🎬</h2>
-                <p>ඔයාට අවශ්‍ය ඕනෑම චිත්‍රපට හෝ ටීවී සීරීස් එකක් ඉතාමත් අඩු මිලකට අපෙන් ලබාගන්න පුළුවන්.</p>
+                <p>ඔයාට අවශ්‍ය ඕනෑම ჩිත්‍රපට හෝ ටීවී සීරීස් එකක් ඉතාමත් අඩු මිලකට අපෙන් ලබාගන්න පුළුවන්.</p>
                 <button class="main-cta-btn" onclick="showPage('order-page')">Get Movies & Request 🚀</button>
             </div>
             
             <button class="admin-toggle-btn" onclick="openAdminPanel()">🔒 Admin Dashboard (Owner Only)</button>
             
+            <!-- LIVE ADMIN LIVE SHEET VIEW -->
             <div class="admin-panel" id="adminPanel">
-                <h3 style="color:#e50914; margin-bottom:15px;">Live Requested Movies List</h3>
-                <ul class="request-list" id="requestList">
-                    <li>Loading live requests... Please wait.</li>
-                </ul>
-                <button class="clear-btn" onclick="clearRequestsFromServer()">Clear All Requests From Server</button>
+                <h3 style="color:#e50914; margin-bottom:15px;">Live Google Sheet Request Database</h3>
+                <div class="sheet-iframe-container">
+                    <!-- ඔයා දුන්න Google Sheet එක ඇඩ්මින් එකට ලයිව් ලින්ක් කරා මචං -->
+                    <iframe src="https://docs.google.com/spreadsheets/d/1bcdNUw6V7ESepOfoupIuTNyOCcyk6ZXBcy4YU8S1eUg/htmlembed?widget=true&amp;headers=false&amp;chrome=false"></iframe>
+                </div>
             </div>
         </section>
 
@@ -334,14 +337,12 @@
                     <a href="https://wa.me/94724098953" target="_blank" class="link-btn whatsapp-chat" style="background-color: #007bff;">Contact Admin (94724098953)</a>
                 </div>
 
-                <!-- MOVIE REQUEST -->
+                <!-- MOVIE REQUEST VIA EMBEDDED GOOGLE FORM -->
                 <div class="request-section">
-                    <h2 style="font-size:20px;">Request Your Favorite Movie 🎬</h2>
-                    <p style="font-size:14px; color:#aaa;">ඔයාට අවශ්‍ය කරන මූවී එකේ නම සහ ඔයාගේ නම ඇතුලත් කරන්න.</p>
-                    <div class="request-form">
-                        <input type="text" id="custName" placeholder="Your Name (ඔයාගේ නම)...">
-                        <input type="text" id="movieName" placeholder="Movie / TV Series Name...">
-                        <button id="submitBtn" onclick="submitRequest()">Submit Request</button>
+                    <h2 style="font-size:20px; color:#ffcc00; margin-bottom:10px;">Request Your Favorite Movie 🎬</h2>
+                    <div class="form-iframe-container">
+                        <!-- ඔයා දුන්න Google Form එක සයිට් එක ඇතුලටම එම්බෙඩ් කරා මචං -->
+                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeUeXoRGXmWLN_yroDDB-87R2d4KuOxlqcNfmebtQk4NSRi4g/viewform?embedded=true">Loading form...</iframe>
                     </div>
                 </div>
 
@@ -351,13 +352,6 @@
     </div>
 
     <script>
-        // ලෝකයේ ඕනෑම තැනක සිට බ්ලොක් නොවී 100% වැඩ කරන පොදු ඩේටාබේස් එකක් (Bin සර්විස් එකක්)
-        // මේක VVIP MOVIE HUB වෙනුවෙන්ම වෙන් කරපු රහස් Key එකක් මචං
-        const API_KEY = "vvip_movie_hub_requests_2026_v3";
-        const API_URL = `https://api.jsonbin.io/v3/b`;
-        // Backup Global API inside open counter just in case
-        const ALT_API = `https://api.api-ninjas.com/v1/kv?key=${API_KEY}`;
-
         function closeModal() {
             document.getElementById('testingModal').style.display = 'none';
         }
@@ -366,88 +360,6 @@
             document.getElementById('home-page').style.display = pageId === 'home-page' ? 'block' : 'none';
             document.getElementById('order-page').style.display = pageId === 'order-page' ? 'block' : 'none';
             window.scrollTo(0, 0);
-        }
-
-        // දැනට තියෙන ලිස්ට් එක සර්වර් එකෙන් ඇදලා ගන්න එක
-        async function fetchCurrentRequests() {
-            try {
-                let res = await fetch(`https://api.countapi.xyz/get/vviphub/reqlist`).catch(()=>null);
-                // Alternately use localized cross-origin server storage
-                let localData = localStorage.getItem('vvip_backup_cloud');
-                return localData ? JSON.parse(localData) : [];
-            } catch(e) {
-                return [];
-            }
-        }
-
-        // REQUEST SUBMIT FUNCTION
-        async function submitRequest() {
-            let name = document.getElementById('custName').value.trim();
-            let movie = document.getElementById('movieName').value.trim();
-            let btn = document.getElementById('submitBtn');
-            
-            if(!name || !movie) {
-                alert("කරුණාකර ඔයාගේ නම සහ Movie එකේ නම ඇතුලත් කරන්න!");
-                return;
-            }
-
-            btn.innerText = "Sending...";
-            btn.disabled = true;
-
-            // සර්වර් එක බ්ලොක් නොවී හැමෝටම ලයිව් ශෙයාර් වෙන්න සකස් කරපු ක්‍රමය
-            let currentRequests = [];
-            let localData = localStorage.getItem('vvip_global_sync');
-            if(localData) {
-                currentRequests = JSON.parse(localData);
-            }
-
-            let newRequest = {
-                customer: name,
-                movie: movie,
-                time: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-            };
-
-            currentRequests.push(newRequest);
-            
-            // මේකෙන් සර්වර් එකේ හැමෝටම පේන්න Sync වෙනවා
-            localStorage.setItem('vvip_global_sync', JSON.stringify(currentRequests));
-
-            // කස්ටමර්ට ශුවර් වෙන්න සර්වර් එකට යැවූ බව පෙන්වනවා
-            setTimeout(() => {
-                alert("ඔයාගේ Request එක සාර්ථකව ලැබුණා! ස්තූතියි.");
-                document.getElementById('custName').value = "";
-                document.getElementById('movieName').value = "";
-                btn.innerText = "Submit Request";
-                btn.disabled = false;
-            }, 800);
-        }
-
-        // ADMIN PANEL එක ඇතුළේ ලයිව් රික්වෙස්ට් පෙන්නන එක
-        function displayRequests() {
-            let listContainer = document.getElementById('requestList');
-            let data = localStorage.getItem('vvip_global_sync');
-            let myRequests = data ? JSON.parse(data) : [];
-            
-            listContainer.innerHTML = "";
-            
-            if(myRequests.length === 0) {
-                listContainer.innerHTML = "<li style='color: #718096;'>තවමත් කිසිදු රික්වෙස්ට් එකක් ලැබී නැත.</li>";
-                return;
-            }
-
-            // අලුත්ම ඒව උඩට එන්න රිවර්ස් කරලා පෙන්වනවා
-            let reversed = [...myRequests].reverse();
-            reversed.forEach(req => {
-                let li = document.createElement('li');
-                li.innerHTML = `
-                    <div>
-                        <span style="color:#ffcc00; font-weight:bold;">🎬 ${req.movie}</span><br>
-                        <span style="font-size:12px; color:#aaa;">By: ${req.customer}</span>
-                    </div>
-                    <span style='color: #718096; font-size:11px;'>${req.time}</span>
-                `;
-                listContainer.appendChild(li);
-            });
         }
 
         function openAdminPanel() {
@@ -459,18 +371,9 @@
                     panel.style.display = "none";
                 } else {
                     panel.style.display = "block";
-                    displayRequests(); 
                 }
             } else if(password !== null) {
                 alert("වැරදි මුරපදයක්!");
-            }
-        }
-
-        function clearRequestsFromServer() {
-            if(confirm("ඔක්කොම රික්වෙස්ට් ලිස්ට් එක මකන්නද?")) {
-                localStorage.removeItem('vvip_global_sync');
-                displayRequests();
-                alert("ලිස්ට් එක ක්ලියර් කරා මචං!");
             }
         }
     </script>
