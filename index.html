@@ -17,30 +17,132 @@
             color: #ffffff;
         }
 
-        /* 1. Testing Alert Banner */
-        .testing-alert {
-            background-color: #ffcc00;
-            color: #000;
-            padding: 12px;
-            text-align: center;
-            font-weight: bold;
-            position: relative;
+        /* ─── 1. NEW POPUP MODAL STYLE (SCREENSHOT එක වගේ) ─── */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(5px);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 2000;
+            transition: opacity 0.3s ease;
         }
 
-        .close-btn {
+        .modal-box {
+            background-color: #1a2232; /* ඩාර්ක් බ්ලූ/බ්ලැක් ටෝන් එක */
+            width: 90%;
+            max-width: 420px;
+            padding: 35px 25px;
+            border-radius: 24px;
+            border: 1px solid #2d3748;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            animation: popupAnim 0.4s ease;
+        }
+
+        @keyframes popupAnim {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-close-x {
             position: absolute;
-            right: 20px;
-            cursor: pointer;
-            font-size: 20px;
-            font-weight: bold;
+            top: 20px;
+            right: 25px;
             background: none;
             border: none;
-            color: #000;
+            color: #718096;
+            font-size: 22px;
+            cursor: pointer;
+            transition: 0.2s;
         }
+
+        .modal-close-x:hover {
+            color: #fff;
+        }
+
+        /* Warning/Testing Icon Style */
+        .modal-icon {
+            font-size: 55px;
+            color: #ffcc00;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .modal-box h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .modal-box p {
+            color: #a0aec0;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* Tags Area */
+        .modal-tags {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background-color: #1e293b;
+            color: #ffcc00;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 204, 0, 0.2);
+        }
+
+        .modal-btn-primary {
+            display: block;
+            width: 100%;
+            background-color: #e50914; /* Store එක නිසා රතු පාට දැම්මා */
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 12px;
+            text-decoration: none;
+        }
+
+        .modal-btn-primary:hover {
+            background-color: #b80710;
+        }
+
+        .modal-btn-secondary {
+            background: none;
+            border: none;
+            color: #718096;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .modal-btn-secondary:hover {
+            color: #a0aec0;
+        }
+
+        /* ────────────────────────────────────────────────── */
 
         /* Navigation Bar */
         nav {
@@ -80,7 +182,6 @@
             padding: 0 20px;
         }
 
-        /* Home Page Section */
         #home-page {
             display: block;
         }
@@ -138,7 +239,7 @@
             margin: 15px 0 10px 0;
             padding: 0 10px;
             font-size: 16px;
-            height: 40px; /* පේළි දෙකක් ආවත් කාඩ් එක එකම ගානට තියෙන්න */
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -159,7 +260,7 @@
             background-color: #128C7E;
         }
 
-        /* 3. Next Page Section */
+        /* Next Page Section */
         #order-page {
             display: none;
             text-align: center;
@@ -222,10 +323,31 @@
 </head>
 <body>
 
-    <!-- 1. Testing Alert Banner -->
-    <div class="testing-alert" id="testingAlert">
-        මෙම වෙබ් අඩවිය දැනට Testing මට්ටමේ පවතී! (Under Testing)
-        <button class="close-btn" onclick="closeAlert()">X</button>
+    <!-- 1. POPUP MODAL (SCREENSHOT එකේ විදිහට) -->
+    <div class="modal-overlay" id="testingModal">
+        <div class="modal-box">
+            <!-- කතිරෙන් අයින් කරන්න බටන් එක -->
+            <button class="modal-close-x" onclick="closeModal()">×</button>
+            
+            <!-- Warning ලකුණ -->
+            <div class="modal-icon">⚠️</div>
+            
+            <h2>Under Testing!</h2>
+            <p>මෙම වෙබ් අඩවිය දැනට පරික්ෂණ මට්ටමේ (Testing) පවතී. ඉදිරියේදී තව බොහෝ දේ ඇතුලත් වනු ඇත!</p>
+            
+            <!-- පොඩි ටැග්ස් 3ක් -->
+            <div class="modal-tags">
+                <span class="tag">⚡ Testing Mode</span>
+                <span class="tag">🚀 New Features Soon</span>
+                <span class="tag">🎬 Movies Coming</span>
+            </div>
+
+            <!-- Main Button එක -->
+            <button class="modal-btn-primary" onclick="closeModal()">Visit Store</button>
+            
+            <!-- පල්ලෙහා බටන් එකෙන් අයින් කරන්න -->
+            <button class="modal-btn-secondary" onclick="closeModal()">Maybe Later</button>
+        </div>
     </div>
 
     <!-- Navigation Header -->
@@ -236,14 +358,12 @@
 
     <div class="container">
         
-        <!-- HOME PAGE (Search & Series List) -->
+        <!-- HOME PAGE -->
         <section id="home-page">
-            <!-- 2. Search Bar -->
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="ඔබට අවශ්‍ය TV Series එකක් Search කරන්න..." onkeyup="searchSeries()">
             </div>
 
-            <!-- TV Series List -->
             <div class="series-grid" id="seriesGrid">
                 
                 <!-- 1. Money Heist -->
@@ -305,22 +425,19 @@
             </div>
         </section>
 
-        <!-- 3. NEXT PAGE (Contact & Group Links) -->
+        <!-- NEXT PAGE -->
         <section id="order-page">
             <div class="order-box">
                 <h2>මිලදී ගැනීමට පහත Link එකක් තෝරන්න</h2>
                 
-                <!-- Group Link -->
                 <a href="https://chat.whatsapp.com/IZ0k2BuZxquDBLeVZ8HRXx?s=cl&p=a&mlu=0&ilr=0&amv=3" target="_blank" class="link-btn whatsapp-group">
                     Join Our WhatsApp Group
                 </a>
 
-                <!-- Personal Chat Link -->
                 <a href="https://wa.me/94772422982?text=Hi,%20I%20want%20to%20buy%20a%20TV%20Series" target="_blank" class="link-btn whatsapp-chat">
                     Contact Seller (94772422982)
                 </a>
 
-                <!-- Back to Home Button -->
                 <a href="#" class="link-btn back-btn" onclick="showPage('home-page')">Go Back</a>
             </div>
         </section>
@@ -328,12 +445,15 @@
     </div>
 
     <script>
-        // Alert එක අයින් කරන Function එක
-        function closeAlert() {
-            document.getElementById('testingAlert').style.display = 'none';
+        // Popup එක වහන Function එක
+        function closeModal() {
+            document.getElementById('testingModal').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('testingModal').style.display = 'none';
+            }, 300); // fade out වෙන්න පොඩි වෙලාවක් දීම
         }
 
-        // පිටු මාරු කරන Function එක (Home <-> Next Page)
+        // පිටු මාරු කරන Function එක
         function showPage(pageId) {
             if(pageId === 'home-page') {
                 document.getElementById('home-page').style.display = 'block';
@@ -342,11 +462,10 @@
                 document.getElementById('home-page').style.display = 'none';
                 document.getElementById('order-page').style.display = 'block';
             }
-            // පිටු මාරු වෙද්දි උඩටම Scroll වෙන්න
             window.scrollTo(0, 0);
         }
 
-        // TV Series Search කරන Function එක
+        // Search Function එක
         function searchSeries() {
             let input = document.getElementById('searchInput').value.toLowerCase();
             let cards = document.getElementsByClassName('series-card');
