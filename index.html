@@ -220,19 +220,17 @@
             background-color: #1a1a1a;
             border: 1px solid #333;
             border-radius: 12px;
-            padding: 30px;
+            padding: 20px;
             margin-top: 35px;
         }
         
-        /* Google Form එක වෙබ් සයිට් එක ඇතුලටම දාන ක්‍රමය (Seamless Integration) */
         .form-iframe-container {
-            position: relative;
             width: 100%;
-            height: 480px;
+            height: 520px;
             overflow: hidden;
             border-radius: 8px;
             border: 1px solid #444;
-            background-color: #fff; /* Google Form එක සුදු පාට නිසා */
+            background-color: #fff;
         }
         
         .form-iframe-container iframe {
@@ -265,10 +263,17 @@
         
         .sheet-iframe-container {
             width: 100%;
-            height: 400px;
+            height: 450px;
             border: 1px solid #222;
-            border-radius: 4px;
+            border-radius: 6px;
             background-color: #fff;
+            overflow: hidden;
+        }
+
+        .sheet-iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
@@ -305,12 +310,12 @@
             
             <button class="admin-toggle-btn" onclick="openAdminPanel()">🔒 Admin Dashboard (Owner Only)</button>
             
-            <!-- LIVE ADMIN LIVE SHEET VIEW -->
+            <!-- LIVE GOOGLE SHEET EMBED -->
             <div class="admin-panel" id="adminPanel">
                 <h3 style="color:#e50914; margin-bottom:15px;">Live Google Sheet Request Database</h3>
                 <div class="sheet-iframe-container">
-                    <!-- ඔයා දුන්න Google Sheet එක ඇඩ්මින් එකට ලයිව් ලින්ක් කරා මචං -->
-                    <iframe src="https://docs.google.com/spreadsheets/d/1bcdNUw6V7ESepOfoupIuTNyOCcyk6ZXBcy4YU8S1eUg/htmlembed?widget=true&amp;headers=false&amp;chrome=false"></iframe>
+                    <!-- ඔන්න මචං ලින්ක් එක හරියටම Responsive වෙන්න හදලා එම්බෙඩ් කරා -->
+                    <iframe src="https://docs.google.com/spreadsheets/d/1bcdNUw6V7ESepOfoupIuTNyOCcyk6ZXBcy4YU8S1eUg/pubhtml?widget=true&amp;headers=false&amp;chrome=false"></iframe>
                 </div>
             </div>
         </section>
@@ -337,11 +342,10 @@
                     <a href="https://wa.me/94724098953" target="_blank" class="link-btn whatsapp-chat" style="background-color: #007bff;">Contact Admin (94724098953)</a>
                 </div>
 
-                <!-- MOVIE REQUEST VIA EMBEDDED GOOGLE FORM -->
+                <!-- MOVIE REQUEST FORM -->
                 <div class="request-section">
-                    <h2 style="font-size:20px; color:#ffcc00; margin-bottom:10px;">Request Your Favorite Movie 🎬</h2>
+                    <h2 style="font-size:20px; color:#ffcc00; margin-bottom:15px;">Request Your Favorite Movie 🎬</h2>
                     <div class="form-iframe-container">
-                        <!-- ඔයා දුන්න Google Form එක සයිට් එක ඇතුලටම එම්බෙඩ් කරා මචං -->
                         <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeUeXoRGXmWLN_yroDDB-87R2d4KuOxlqcNfmebtQk4NSRi4g/viewform?embedded=true">Loading form...</iframe>
                     </div>
                 </div>
