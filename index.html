@@ -215,28 +215,32 @@
         .whatsapp-chat { background-color: #25D366; }
         .back-btn { background-color: #444; margin-top: 25px; }
 
-        /* Request Form Box */
-        .request-section {
-            background-color: #1a1a1a;
-            border: 1px solid #333;
+        /* Maintenance/Notice Box Style */
+        .notice-box {
+            background-color: rgba(229, 9, 20, 0.1);
+            border: 2px dashed #e50914;
             border-radius: 12px;
-            padding: 20px;
+            padding: 30px 20px;
             margin-top: 35px;
+            text-align: center;
         }
         
-        .form-iframe-container {
-            width: 100%;
-            height: 520px;
-            overflow: hidden;
-            border-radius: 8px;
-            border: 1px solid #444;
-            background-color: #fff;
+        .notice-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
         }
-        
-        .form-iframe-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+
+        .notice-box h3 {
+            color: #e50914;
+            font-size: 20px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .notice-box p {
+            color: #cccccc;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
         /* Admin Dashboard Section */
@@ -314,7 +318,6 @@
             <div class="admin-panel" id="adminPanel">
                 <h3 style="color:#e50914; margin-bottom:15px;">Live Google Sheet Request Database</h3>
                 <div class="sheet-iframe-container">
-                    <!-- ඔන්න මචං ලින්ක් එක හරියටම Responsive වෙන්න හදලා එම්බෙඩ් කරා -->
                     <iframe src="https://docs.google.com/spreadsheets/d/1bcdNUw6V7ESepOfoupIuTNyOCcyk6ZXBcy4YU8S1eUg/pubhtml?widget=true&amp;headers=false&amp;chrome=false"></iframe>
                 </div>
             </div>
@@ -342,12 +345,11 @@
                     <a href="https://wa.me/94724098953" target="_blank" class="link-btn whatsapp-chat" style="background-color: #007bff;">Contact Admin (94724098953)</a>
                 </div>
 
-                <!-- MOVIE REQUEST FORM -->
-                <div class="request-section">
-                    <h2 style="font-size:20px; color:#ffcc00; margin-bottom:15px;">Request Your Favorite Movie 🎬</h2>
-                    <div class="form-iframe-container">
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeUeXoRGXmWLN_yroDDB-87R2d4KuOxlqcNfmebtQk4NSRi4g/viewform?embedded=true">Loading form...</iframe>
-                    </div>
+                <!-- TAVAKALIKAVA NAVATHA ATHA NOTICE BOX -->
+                <div class="notice-box">
+                    <div class="notice-icon">🛑</div>
+                    <h3>Movie Request කිරීම තාවකාලිකව නවතා ඇත</h3>
+                    <p>පද්ධතියේ යාවත්කාලීන කිරීමක් (Update) හේතුවෙන් වෙබ් අඩවිය හරහා චිත්‍රපට ඉල්ලුම් කිරීම තාවකාලිකව අත්හිටුවා ඇත. කරුණාකර ඉහත ඇති WhatsApp සමූහය හෝ ඇඩ්මින්වරුන් සම්බන්ධ කරගන්න.</p>
                 </div>
 
                 <button class="link-btn back-btn" onclick="showPage('home-page')">Go Back Home</button>
