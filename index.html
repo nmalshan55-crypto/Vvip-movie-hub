@@ -1,179 +1,508 @@
 <!DOCTYPE html>
 <html lang="si">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SL MOVIE CLUB</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VVIP MOVIE HUB</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:Arial;background:#111;color:#fff;}
+        body {
+            background-color: #141414;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-header{
-  background:#000;
-  padding:15px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.logo{color:red;font-size:22px;font-weight:bold;}
-.menu-icon{font-size:28px;cursor:pointer;display:none;}
+        /* POPUP MODAL STYLE */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
 
-nav{display:flex;}
-nav a{color:#fff;text-decoration:none;margin-left:20px;}
+        .modal-box {
+            background-color: #1a2232;
+            width: 90%;
+            max-width: 420px;
+            padding: 35px 25px;
+            border-radius: 24px;
+            border: 1px solid #2d3748;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
 
-@media(max-width:768px){
-  .menu-icon{display:block;}
-  nav{display:none;position:absolute;top:60px;left:0;width:100%;background:#000;flex-direction:column;text-align:center;}
-  nav.active{display:flex;}
-  nav a{margin:10px 0;}
-}
+        .modal-close-x {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: none;
+            border: none;
+            color: #718096;
+            font-size: 22px;
+            cursor: pointer;
+        }
 
-.search-container{text-align:center;margin:20px;}
-#searchInput{width:80%;padding:12px;border-radius:30px;border:none;}
+        .modal-icon {
+            font-size: 55px;
+            color: #ffcc00;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
 
-.movie-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-  gap:15px;
-  padding:15px;
-}
+        .modal-box h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
 
-.movie-card{
-  position:relative;
-  border-radius:10px;
-  overflow:hidden;
-  color:white;
-  cursor:pointer;
-}
+        .modal-box p {
+            color: #a0aec0;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
 
-.movie-card img{
-  width:100%;
-  height:230px;
-  object-fit:cover;
-}
+        .modal-tags {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
 
-.overlay{
-  position:absolute;
-  bottom:0;
-  width:100%;
-  padding:10px;
-  background:linear-gradient(to top,rgba(0,0,0,0.9),transparent);
-}
+        .tag {
+            background-color: #1e293b;
+            color: #ffcc00;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 204, 0, 0.2);
+        }
 
-.movie-title{font-size:14px;font-weight:bold;}
+        .modal-btn-primary {
+            display: block;
+            width: 100%;
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+        }
 
-.tag{
-  position:absolute;
-  top:8px;
-  left:8px;
-  background:red;
-  padding:3px 7px;
-  font-size:11px;
-  border-radius:4px;
-}
+        /* Navigation Bar */
+        nav {
+            background-color: #000;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e50914;
+        }
 
-.rating{
-  position:absolute;
-  top:8px;
-  right:8px;
-  background:gold;
-  color:#000;
-  padding:3px 6px;
-  font-size:12px;
-  border-radius:4px;
-}
+        nav h1 {
+            color: #e50914; 
+            font-size: 26px;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
 
-/* DELETE BUTTON */
-.delete-btn{
-  position:absolute;
-  bottom:8px;
-  right:8px;
-  background:red;
-  color:#fff;
-  border:none;
-  padding:5px 8px;
-  font-size:12px;
-  border-radius:5px;
-  cursor:pointer;
-}
-</style>
+        nav button {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+
+        .welcome-box {
+            text-align: center;
+            background: linear-gradient(135deg, #1f1f1f 0%, #111 100%);
+            border: 1px solid #2d2d2d;
+            padding: 50px 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 40px;
+        }
+
+        .welcome-box h2 {
+            font-size: 36px;
+            color: #ffcc00;
+            margin-bottom: 15px;
+        }
+
+        .welcome-box p {
+            color: #cccccc;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+
+        .main-cta-btn {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        /* MOVIE GRID SECTION */
+        .movie-section-title {
+            font-size: 24px;
+            color: #fff;
+            margin-bottom: 20px;
+            border-left: 4px solid #e50914;
+            padding-left: 10px;
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .movie-card {
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #2d2d2d;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-5px);
+            border-color: #e50914;
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            background-color: #222;
+        }
+
+        .movie-info {
+            padding: 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .movie-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .movie-year {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        .download-btn {
+            display: block;
+            background-color: #e50914;
+            color: white;
+            text-align: center;
+            padding: 8px 0;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .download-btn:hover {
+            background-color: #b80710;
+        }
+
+        /* Next Page / Order Page */
+        #order-page {
+            display: none;
+            text-align: center;
+        }
+
+        .order-box {
+            background-color: #222;
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 40px 30px;
+            border-radius: 16px;
+            border: 1px solid #333;
+        }
+
+        .order-box h2 { color: #ffcc00; margin-bottom: 25px; }
+
+        .contact-row { margin-bottom: 15px; text-align: left; }
+        .badge { display: inline-block; font-size: 11px; padding: 4px 10px; border-radius: 4px; font-weight: bold; margin-bottom: 6px; }
+        .badge.owner { background-color: #e50914; color: white; }
+        .badge.admin { background-color: #007bff; color: white; }
+
+        .link-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+            border-radius: 6px;
+        }
+        .whatsapp-group { background-color: #128C7E; margin-bottom: 25px;}
+        .whatsapp-chat { background-color: #25D366; }
+        .back-btn { background-color: #444; margin-top: 25px; }
+
+        /* Notice Box Style */
+        .notice-box {
+            background-color: rgba(229, 9, 20, 0.1);
+            border: 2px dashed #e50914;
+            border-radius: 12px;
+            padding: 30px 20px;
+            margin-top: 35px;
+            text-align: center;
+        }
+        
+        .notice-icon { font-size: 40px; margin-bottom: 10px; }
+        .notice-box h3 { color: #e50914; font-size: 20px; margin-bottom: 8px; font-weight: bold; }
+        .notice-box p { color: #cccccc; font-size: 14px; line-height: 1.5; }
+
+        /* Admin Dashboard Section */
+        .admin-toggle-btn {
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 12px;
+            margin-top: 40px;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .admin-panel {
+            display: none;
+            background-color: #0d0d0d;
+            border: 1px dashed #e50914;
+            border-radius: 8px;
+            padding: 15px;
+            max-width: 700px;
+            margin: 20px auto 0 auto;
+            text-align: left;
+        }
+        
+        .sheet-iframe-container {
+            width: 100%;
+            height: 450px;
+            border: 1px solid #222;
+            border-radius: 6px;
+            background-color: #fff;
+            overflow: hidden;
+        }
+
+        .sheet-iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
 </head>
-
 <body>
 
-<header>
-  <div class="logo">SL MOVIE CLUB</div>
-  <div class="menu-icon" onclick="toggleMenu()">☰</div>
-  <nav id="navMenu">
-    <a href="#">Home</a>
-    <a href="#">Movies</a>
-    <a href="#">Series</a>
-    <a href="admin.html">Admin</a>
-  </nav>
-</header>
+    <!-- POPUP MODAL -->
+    <div class="modal-overlay" id="testingModal">
+        <div class="modal-box">
+            <button class="modal-close-x" onclick="closeModal()">×</button>
+            <div class="modal-icon">⚠️</div>
+            <h2>Under Testing!</h2>
+            <p>මෙම වෙබ් අඩවිය දැනට පරික්ෂණ මට්ටමේ පවතී. දැන් ඔබට පහසුවෙන්ම අපව සම්බන්ධ කරගෙන Movies ලබාගත හැක!</p>
+            <div class="modal-tags">
+                <span class="tag">⚡ Testing Mode</span>
+                <span class="tag">🎬 VVIP Hub v2.0</span>
+            </div>
+            <button class="modal-btn-primary" onclick="closeModal()">Visit Hub</button>
+        </div>
+    </div>
 
-<div class="search-container">
-<input type="text" id="searchInput" placeholder="Search..." onkeyup="searchMovies()">
-</div>
+    <nav>
+        <h1>VVIP MOVIE HUB</h1>
+        <button onclick="showPage('order-page')">Contact Us</button>
+    </nav>
 
-<div class="movie-grid" id="movieList"></div>
+    <div class="container">
+        <!-- HOME PAGE -->
+        <section id="home-page">
+            <div class="welcome-box">
+                <h2>Welcome to VVIP MOVIE HUB 🎬</h2>
+                <p>ඔයාට අවශ්‍ය ඕනෑම ჩිත්‍රපට හෝ ටීවී සීරීස් එකක් ඉතාමත් අඩු මිලකට අපෙන් ලබාගන්න පුළුවන්.</p>
+                <button class="main-cta-btn" onclick="showPage('order-page')">Request Movie 🚀</button>
+            </div>
 
-<script>
-function toggleMenu(){
-  document.getElementById("navMenu").classList.toggle("active");
-}
+            <!-- LATEST MOVIES SECTION -->
+            <h2 class="movie-section-title">Latest Uploads 🍿</h2>
+            <div class="movie-grid">
+                
+                <!-- MOVIE 1 -->
+                <div class="movie-card">
+                    <!-- මෙතන src="..." එකට ඔයාට ඕන පෝස්ටර් ලින්ක් එකක් දාන්න පුළුවන් -->
+                    <img src="https://image.tmdb.org/t/p/w500/8cdcl36GbXO82lhJVwTFo1aFA04.jpg" alt="Deadpool & Wolverine" class="movie-poster">
+                    <div class="movie-info">
+                        <div>
+                            <div class="movie-title">Deadpool & Wolverine</div>
+                            <div class="movie-year">Action, Sci-Fi (2024)</div>
+                        </div>
+                        <!-- href="..." එකට ඔයාගේ Telegram / Drive Download Link එක දාන්න -->
+                        <a href="https://t.me/your_channel_link" target="_blank" class="download-btn">Download / Watch</a>
+                    </div>
+                </div>
 
-let movies = JSON.parse(localStorage.getItem("movies")) || [];
-let container = document.getElementById("movieList");
+                <!-- MOVIE 2 -->
+                <div class="movie-card">
+                    <img src="https://image.tmdb.org/t/p/w500/kuf6tpu2XIIHrmm0Z9OIc8N3Hj9.jpg" alt="Avatar: The Way of Water" class="movie-poster">
+                    <div class="movie-info">
+                        <div>
+                            <div class="movie-title">Avatar: The Way of Water</div>
+                            <div class="movie-year">Sci-Fi, Adventure (2022)</div>
+                        </div>
+                        <a href="https://t.me/your_channel_link" target="_blank" class="download-btn">Download / Watch</a>
+                    </div>
+                </div>
 
-// DISPLAY
-function displayMovies(list){
-  container.innerHTML="";
+                <!-- MOVIE 3 -->
+                <div class="movie-card">
+                    <img src="https://image.tmdb.org/t/p/w500/rjoX716GvcrOhjuxtihv12145w3.jpg" alt="Spider-Man: No Way Home" class="movie-poster">
+                    <div class="movie-info">
+                        <div>
+                            <div class="movie-title">Spider-Man: No Way Home</div>
+                            <div class="movie-year">Action, Fantasy (2021)</div>
+                        </div>
+                        <a href="https://t.me/your_channel_link" target="_blank" class="download-btn">Download / Watch</a>
+                    </div>
+                </div>
 
-  list.forEach((movie,index)=>{
-    container.innerHTML += `
-    <div class="movie-card" onclick="openMovie(${index})">
-      <img src="${movie.img}">
-      <span class="tag">WEB</span>
-      <span class="rating">⭐ ${movie.rating}</span>
+                <!-- MOVIE 4 -->
+                <div class="movie-card">
+                    <img src="https://image.tmdb.org/t/p/w500/uxzzkkijntZHaaGxh6QjFYY7YRL.jpg" alt=" there is no image " class="movie-poster">
+                    <div class="movie-info">
+                        <div>
+                            <div class="movie-title">Interstellar</div>
+                            <div class="movie-year">Sci-Fi, Drama (2014)</div>
+                        </div>
+                        <a href="https://t.me/your_channel_link" target="_blank" class="download-btn">Download / Watch</a>
+                    </div>
+                </div>
 
-      <div class="overlay">
-        <div class="movie-title">${movie.name}</div>
-      </div>
+            </div>
+            
+            <button class="admin-toggle-btn" onclick="openAdminPanel()">🔒 Admin Dashboard (Owner Only)</button>
+            
+            <!-- LIVE GOOGLE SHEET EMBED -->
+            <div class="admin-panel" id="adminPanel">
+                <h3 style="color:#e50914; margin-bottom:15px;">Live Google Sheet Request Database</h3>
+                <div class="sheet-iframe-container">
+                    <iframe src="https://docs.google.com/spreadsheets/d/1bcdNUw6V7ESepOfoupIuTNyOCcyk6ZXBcy4YU8S1eUg/pubhtml?widget=true&amp;headers=false&amp;chrome=false"></iframe>
+                </div>
+            </div>
+        </section>
 
-      <button class="delete-btn" onclick="deleteMovie(event, ${index})">Delete</button>
-    </div>`;
-  });
-}
+        <!-- NEXT PAGE -->
+        <section id="order-page">
+            <div class="order-box">
+                <h2>අපව සම්බන්ධ කරගන්න</h2>
+                
+                <a href="https://chat.whatsapp.com/IZ0k2BuZxquDBLeVZ8HRXx" target="_blank" class="link-btn whatsapp-group">Join Our WhatsApp Group</a>
 
-// OPEN MOVIE
-function openMovie(index){
-  let m = movies[index];
-  window.location.href = `movie.html?name=${m.name}&img=${m.img}&link=${m.link}`;
-}
+                <div class="contact-row">
+                    <span class="badge owner">Owner</span>
+                    <a href="https://wa.me/94772422982" target="_blank" class="link-btn whatsapp-chat">Contact Owner (94772422982)</a>
+                </div>
 
-// DELETE
-function deleteMovie(event, index){
-  event.stopPropagation(); // 🔥 important
+                <div class="contact-row">
+                    <span class="badge admin">Admin 1</span>
+                    <a href="https://wa.me/94721353440" target="_blank" class="link-btn whatsapp-chat" style="background-color: #007bff;">Contact Admin (94721353440)</a>
+                </div>
 
-  if(confirm("Delete this movie?")){
-    movies.splice(index,1);
-    localStorage.setItem("movies", JSON.stringify(movies));
-    displayMovies(movies);
-  }
-}
+                <div class="contact-row">
+                    <span class="badge admin">Admin 2</span>
+                    <a href="https://wa.me/94724098953" target="_blank" class="link-btn whatsapp-chat" style="background-color: #007bff;">Contact Admin (94724098953)</a>
+                </div>
 
-// SEARCH
-function searchMovies(){
-  let input=document.getElementById("searchInput").value.toLowerCase();
-  let filtered=movies.filter(m=>m.name.toLowerCase().includes(input));
-  displayMovies(filtered);
-}
+                <!-- NOTICE BOX -->
+                <div class="notice-box">
+                    <div class="notice-icon">🛑</div>
+                    <h3>Movie Request කිරීම තාවකාලිකව නවතා ඇත</h3>
+                    <p>පද්ධතියේ යාවත්කාලීන කිරීමක් (Update) හේතුවෙන් වෙබ් අඩවිය හරහා චිත්‍රපට ඉල්ලුම් කිරීම තාවකාලිකව අත්හිටුවා ඇත. කරුණාකර ඉහත ඇති WhatsApp සමූහය හෝ ඇඩ්මින්වරුන් සම්බන්ධ කරගන්න.</p>
+                </div>
 
-// LOAD
-displayMovies(movies);
-</script>
+                <button class="link-btn back-btn" onclick="showPage('home-page')">Go Back Home</button>
+            </div>
+        </section>
+    </div>
 
+    <script>
+        function closeModal() {
+            document.getElementById('testingModal').style.display = 'none';
+        }
+
+        function showPage(pageId) {
+            document.getElementById('home-page').style.display = pageId === 'home-page' ? 'block' : 'none';
+            document.getElementById('order-page').style.display = pageId === 'order-page' ? 'block' : 'none';
+            window.scrollTo(0, 0);
+        }
+
+        function openAdminPanel() {
+            let password = prompt("Admin Dashboard එකට ඇතුල් වීමට මුරපදය (Password) ඇතුලත් කරන්න:");
+            
+            if(password === "admin123") {
+                let panel = document.getElementById('adminPanel');
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+            } else if(password !== null) {
+                alert("වැරදි මුරපදයක්!");
+            }
+        }
+    </script>
 </body>
 </html>
