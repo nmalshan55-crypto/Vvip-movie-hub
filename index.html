@@ -1,387 +1,179 @@
 <!DOCTYPE html>
 <html lang="si">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VVIP MOVIE HUB</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SL MOVIE CLUB</title>
 
-        body {
-            background-color: #141414;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Arial;background:#111;color:#fff;}
 
-        /* POPUP MODAL STYLE */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
+header{
+  background:#000;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo{color:red;font-size:22px;font-weight:bold;}
+.menu-icon{font-size:28px;cursor:pointer;display:none;}
 
-        .modal-box {
-            background-color: #1a2232;
-            width: 90%;
-            max-width: 420px;
-            padding: 35px 25px;
-            border-radius: 24px;
-            border: 1px solid #2d3748;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
+nav{display:flex;}
+nav a{color:#fff;text-decoration:none;margin-left:20px;}
 
-        .modal-close-x {
-            position: absolute;
-            top: 20px;
-            right: 25px;
-            background: none;
-            border: none;
-            color: #718096;
-            font-size: 22px;
-            cursor: pointer;
-        }
+@media(max-width:768px){
+  .menu-icon{display:block;}
+  nav{display:none;position:absolute;top:60px;left:0;width:100%;background:#000;flex-direction:column;text-align:center;}
+  nav.active{display:flex;}
+  nav a{margin:10px 0;}
+}
 
-        .modal-icon {
-            font-size: 55px;
-            color: #ffcc00;
-            margin-bottom: 15px;
-            display: inline-block;
-        }
+.search-container{text-align:center;margin:20px;}
+#searchInput{width:80%;padding:12px;border-radius:30px;border:none;}
 
-        .modal-box h2 {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
+.movie-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:15px;
+  padding:15px;
+}
 
-        .modal-box p {
-            color: #a0aec0;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
+.movie-card{
+  position:relative;
+  border-radius:10px;
+  overflow:hidden;
+  color:white;
+  cursor:pointer;
+}
 
-        .modal-tags {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
+.movie-card img{
+  width:100%;
+  height:230px;
+  object-fit:cover;
+}
 
-        .tag {
-            background-color: #1e293b;
-            color: #ffcc00;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            border: 1px solid rgba(255, 204, 0, 0.2);
-        }
+.overlay{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  padding:10px;
+  background:linear-gradient(to top,rgba(0,0,0,0.9),transparent);
+}
 
-        .modal-btn-primary {
-            display: block;
-            width: 100%;
-            background-color: #e50914;
-            color: white;
-            border: none;
-            padding: 14px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 12px;
-            cursor: pointer;
-        }
+.movie-title{font-size:14px;font-weight:bold;}
 
-        /* Navigation Bar */
-        nav {
-            background-color: #000;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #e50914;
-        }
+.tag{
+  position:absolute;
+  top:8px;
+  left:8px;
+  background:red;
+  padding:3px 7px;
+  font-size:11px;
+  border-radius:4px;
+}
 
-        nav h1 {
-            color: #e50914; 
-            font-size: 26px;
-            letter-spacing: 2px;
-            font-weight: 800;
-        }
+.rating{
+  position:absolute;
+  top:8px;
+  right:8px;
+  background:gold;
+  color:#000;
+  padding:3px 6px;
+  font-size:12px;
+  border-radius:4px;
+}
 
-        nav button {
-            background-color: #e50914;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 4px;
-        }
-
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            flex: 1;
-        }
-
-        .welcome-box {
-            text-align: center;
-            background: linear-gradient(135deg, #1f1f1f 0%, #111 100%);
-            border: 1px solid #2d2d2d;
-            padding: 60px 20px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            margin-bottom: 40px;
-        }
-
-        .welcome-box h2 {
-            font-size: 42px;
-            color: #ffcc00;
-            margin-bottom: 15px;
-        }
-
-        .welcome-box p {
-            color: #cccccc;
-            font-size: 18px;
-            margin-bottom: 30px;
-        }
-
-        .main-cta-btn {
-            background-color: #e50914;
-            color: white;
-            border: none;
-            padding: 16px 40px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 30px;
-            cursor: pointer;
-        }
-
-        /* Next Page / Order Page */
-        #order-page {
-            display: none;
-            text-align: center;
-        }
-
-        .order-box {
-            background-color: #222;
-            max-width: 550px;
-            margin: 0 auto;
-            padding: 40px 30px;
-            border-radius: 16px;
-            border: 1px solid #333;
-        }
-
-        .order-box h2 { color: #ffcc00; margin-bottom: 25px; }
-
-        .contact-row { margin-bottom: 15px; text-align: left; }
-        .badge { display: inline-block; font-size: 11px; padding: 4px 10px; border-radius: 4px; font-weight: bold; margin-bottom: 6px; }
-        .badge.owner { background-color: #e50914; color: white; }
-        .badge.admin { background-color: #007bff; color: white; }
-
-        .link-btn {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 14px;
-            font-size: 16px;
-            font-weight: bold;
-            text-decoration: none;
-            color: white;
-            border-radius: 6px;
-        }
-        .whatsapp-group { background-color: #128C7E; margin-bottom: 25px;}
-        .whatsapp-chat { background-color: #25D366; }
-        .back-btn { background-color: #444; margin-top: 25px; }
-
-        /* Maintenance/Notice Box Style */
-        .notice-box {
-            background-color: rgba(229, 9, 20, 0.1);
-            border: 2px dashed #e50914;
-            border-radius: 12px;
-            padding: 30px 20px;
-            margin-top: 35px;
-            text-align: center;
-        }
-        
-        .notice-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
-        }
-
-        .notice-box h3 {
-            color: #e50914;
-            font-size: 20px;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        .notice-box p {
-            color: #cccccc;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        /* Admin Dashboard Section */
-        .admin-toggle-btn {
-            background: none;
-            border: none;
-            color: #333;
-            font-size: 12px;
-            margin-top: 40px;
-            cursor: pointer;
-            width: 100%;
-        }
-        
-        .admin-panel {
-            display: none;
-            background-color: #0d0d0d;
-            border: 1px dashed #e50914;
-            border-radius: 8px;
-            padding: 15px;
-            max-width: 700px;
-            margin: 20px auto 0 auto;
-            text-align: left;
-        }
-        
-        .sheet-iframe-container {
-            width: 100%;
-            height: 450px;
-            border: 1px solid #222;
-            border-radius: 6px;
-            background-color: #fff;
-            overflow: hidden;
-        }
-
-        .sheet-iframe-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+/* DELETE BUTTON */
+.delete-btn{
+  position:absolute;
+  bottom:8px;
+  right:8px;
+  background:red;
+  color:#fff;
+  border:none;
+  padding:5px 8px;
+  font-size:12px;
+  border-radius:5px;
+  cursor:pointer;
+}
+</style>
 </head>
+
 <body>
 
-    <!-- POPUP MODAL -->
-    <div class="modal-overlay" id="testingModal">
-        <div class="modal-box">
-            <button class="modal-close-x" onclick="closeModal()">×</button>
-            <div class="modal-icon">⚠️</div>
-            <h2>Under Testing!</h2>
-            <p>මෙම වෙබ් අඩවිය දැනට පරික්ෂණ මට්ටමේ පවතී. දැන් ඔබට පහසුවෙන්ම අපව සම්බන්ධ කරගෙන Movies ලබාගත හැක!</p>
-            <div class="modal-tags">
-                <span class="tag">⚡ Testing Mode</span>
-                <span class="tag">🎬 VVIP Hub v2.0</span>
-            </div>
-            <button class="modal-btn-primary" onclick="closeModal()">Visit Hub</button>
-        </div>
-    </div>
+<header>
+  <div class="logo">SL MOVIE CLUB</div>
+  <div class="menu-icon" onclick="toggleMenu()">☰</div>
+  <nav id="navMenu">
+    <a href="#">Home</a>
+    <a href="#">Movies</a>
+    <a href="#">Series</a>
+    <a href="admin.html">Admin</a>
+  </nav>
+</header>
 
-    <nav>
-        <h1>VVIP MOVIE HUB</h1>
-        <button onclick="showPage('order-page')">Contact Us</button>
-    </nav>
+<div class="search-container">
+<input type="text" id="searchInput" placeholder="Search..." onkeyup="searchMovies()">
+</div>
 
-    <div class="container">
-        <!-- HOME PAGE -->
-        <section id="home-page">
-            <div class="welcome-box">
-                <h2>Welcome to VVIP MOVIE HUB 🎬</h2>
-                <p>ඔයාට අවශ්‍ය ඕනෑම සිංහල හඩකැවූ ටීවී සීරීස් එකක් හෝ සිංහල උපසිරැසි සමගින් ඉතාමත් අඩු මිලකට අපෙන් ලබාගන්න පුළුවන්.</p>
-                <button class="main-cta-btn" onclick="showPage('order-page')">Get Movies & Request 🚀</button>
-            </div>
-            
-            <button class="admin-toggle-btn" onclick="openAdminPanel()">🔒 Admin Dashboard (Owner Only)</button>
-            
-            <!-- LIVE GOOGLE SHEET EMBED -->
-            <div class="admin-panel" id="adminPanel">
-                <h3 style="color:#e50914; margin-bottom:15px;">Live Google Sheet Request Database</h3>
-                <div class="sheet-iframe-container">
-                    <iframe src="https://docs.google.com/spreadsheets/d/1bcdNUw6V7ESepOfoupIuTNyOCcyk6ZXBcy4YU8S1eUg/pubhtml?widget=true&amp;headers=false&amp;chrome=false"></iframe>
-                </div>
-            </div>
-        </section>
+<div class="movie-grid" id="movieList"></div>
 
-        <!-- NEXT PAGE -->
-        <section id="order-page">
-            <div class="order-box">
-                <h2>අපව සම්බන්ධ කරගන්න</h2>
-                
-                <a href="https://chat.whatsapp.com/IZ0k2BuZxquDBLeVZ8HRXx" target="_blank" class="link-btn whatsapp-group">Join Our WhatsApp Group</a>
+<script>
+function toggleMenu(){
+  document.getElementById("navMenu").classList.toggle("active");
+}
 
-                <div class="contact-row">
-                    <span class="badge owner">Owner</span>
-                    <a href="https://wa.me/94772422982" target="_blank" class="link-btn whatsapp-chat">Contact Owner (94772422982)</a>
-                </div>
+let movies = JSON.parse(localStorage.getItem("movies")) || [];
+let container = document.getElementById("movieList");
 
-                <div class="contact-row">
-                    <span class="badge admin">Admin 1</span>
-                    <a href="https://wa.me/94721353440" target="_blank" class="link-btn whatsapp-chat" style="background-color: #007bff;">Contact Admin (94721353440)</a>
-                </div>
+// DISPLAY
+function displayMovies(list){
+  container.innerHTML="";
 
-                <div class="contact-row">
-                    <span class="badge admin">Admin 2</span>
-                    <a href="https://wa.me/94724098953" target="_blank" class="link-btn whatsapp-chat" style="background-color: #007bff;">Contact Admin (94724098953)</a>
-                </div>
+  list.forEach((movie,index)=>{
+    container.innerHTML += `
+    <div class="movie-card" onclick="openMovie(${index})">
+      <img src="${movie.img}">
+      <span class="tag">WEB</span>
+      <span class="rating">⭐ ${movie.rating}</span>
 
-                <!-- TAVAKALIKAVA NAVATHA ATHA NOTICE BOX -->
-                <div class="notice-box">
-                    <div class="notice-icon">🛑</div>
-                    <h3>Movie Request කිරීම තාවකාලිකව නවතා ඇත</h3>
-                    <p>පද්ධතියේ යාවත්කාලීන කිරීමක් (Update) හේතුවෙන් වෙබ් අඩවිය හරහා චිත්‍රපට ඉල්ලුම් කිරීම තාවකාලිකව අත්හිටුවා ඇත. කරුණාකර ඉහත ඇති WhatsApp සමූහය හෝ ඇඩ්මින්වරුන් සම්බන්ධ කරගන්න.</p>
-                </div>
+      <div class="overlay">
+        <div class="movie-title">${movie.name}</div>
+      </div>
 
-                <button class="link-btn back-btn" onclick="showPage('home-page')">Go Back Home</button>
-            </div>
-        </section>
-    </div>
+      <button class="delete-btn" onclick="deleteMovie(event, ${index})">Delete</button>
+    </div>`;
+  });
+}
 
-    <script>
-        function closeModal() {
-            document.getElementById('testingModal').style.display = 'none';
-        }
+// OPEN MOVIE
+function openMovie(index){
+  let m = movies[index];
+  window.location.href = `movie.html?name=${m.name}&img=${m.img}&link=${m.link}`;
+}
 
-        function showPage(pageId) {
-            document.getElementById('home-page').style.display = pageId === 'home-page' ? 'block' : 'none';
-            document.getElementById('order-page').style.display = pageId === 'order-page' ? 'block' : 'none';
-            window.scrollTo(0, 0);
-        }
+// DELETE
+function deleteMovie(event, index){
+  event.stopPropagation(); // 🔥 important
 
-        function openAdminPanel() {
-            let password = prompt("Admin Dashboard එකට ඇතුල් වීමට මුරපදය (Password) ඇතුලත් කරන්න:");
-            
-            if(password === "admin123") {
-                let panel = document.getElementById('adminPanel');
-                if (panel.style.display === "block") {
-                    panel.style.display = "none";
-                } else {
-                    panel.style.display = "block";
-                }
-            } else if(password !== null) {
-                alert("වැරදි මුරපදයක්!");
-            }
-        }
-    </script>
+  if(confirm("Delete this movie?")){
+    movies.splice(index,1);
+    localStorage.setItem("movies", JSON.stringify(movies));
+    displayMovies(movies);
+  }
+}
+
+// SEARCH
+function searchMovies(){
+  let input=document.getElementById("searchInput").value.toLowerCase();
+  let filtered=movies.filter(m=>m.name.toLowerCase().includes(input));
+  displayMovies(filtered);
+}
+
+// LOAD
+displayMovies(movies);
+</script>
+
 </body>
 </html>
